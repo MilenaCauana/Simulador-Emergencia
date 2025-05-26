@@ -1,2 +1,2 @@
-# Simula-o-Emerg-ncia
+# Simulador-Emergencia
 Projeto semestral da disciplina de Estrutura de Dados I
