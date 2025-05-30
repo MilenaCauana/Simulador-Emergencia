@@ -31,7 +31,17 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="Structs.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="include/bairro.h" />
 		<Unit filename="main.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/bairro.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/main.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Extensions>

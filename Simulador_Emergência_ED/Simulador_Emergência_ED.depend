@@ -1,0 +1,17 @@
+# depslib dependency file v1.0
+1748641470 source:c:\users\igor pereira marani\onedrive\Área de trabalho\programas - meus\github\simulador-emergencia\simulador_emergência_ed\src\main.c
+	<stdio.h>
+	<stdlib.h>
+
+1748631055 source:c:\users\igor pereira marani\onedrive\Área de trabalho\programas - meus\github\simulador-emergencia\simulador_emergência_ed\structs.c
+	<stdio.h>
+	<stdlib.h>
+	<stdbool.h>
+
+1748643740 source:c:\users\igor pereira marani\onedrive\Área de trabalho\programas - meus\github\simulador-emergencia\simulador_emergência_ed\src\bairro.c
+	<stdio.h>
+	<stdlib.h>
+	"C:\Users\Igor Pereira Marani\OneDrive\Área de Trabalho\Programas - Meus\GitHub\Simulador-Emergencia\Simulador_Emergência_ED\include\bairro.h"
+
+1748642189 c:\users\igor pereira marani\onedrive\Área de trabalho\programas - meus\github\simulador-emergencia\simulador_emergência_ed\include\bairro.h
+
