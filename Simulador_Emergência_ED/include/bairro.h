@@ -3,6 +3,16 @@ typedef struct Bairros_da_cidade Bairros;
 
 typedef struct hash Hash;
 
-void preenche_bairros();
+void confere_alloc(Hash *item);
 
-void confere_alloc(Bairros *item);
+Hash* cria_hash_bairros(int tamanho);
+
+int chave_divisao(int chave, int tamanho);
+
+int sondagem_linear(int pos, int i, int tamanho);
+
+int insere_hash_ender_aberto(Hash* ha, Bairros bairro);
+
+int busca_hash_ender_aberto(Hash* ha, int mat, Bairros* bairro);
+
+void preenche_bairros();
