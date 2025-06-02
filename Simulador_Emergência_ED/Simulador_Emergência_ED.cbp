@@ -35,6 +35,7 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="include/bairro.h" />
+		<Unit filename="include/ocorrencia.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -42,6 +43,9 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="src/main.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/ocorrencias.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Extensions>

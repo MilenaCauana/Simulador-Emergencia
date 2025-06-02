@@ -20,6 +20,16 @@ typedef struct hash{
 
 }Hash;
 
+Bairros bairro1;
+Bairros bairro2;
+Bairros bairro3;
+Bairros bairro4;
+Bairros bairro5;
+Bairros bairro6;
+Bairros bairro7;
+Bairros bairro8;
+Bairros bairro9;
+
 void confere_alloc(Hash* item){
 
     if(item == NULL){
@@ -118,55 +128,103 @@ int busca_hash_ender_aberto(Hash* ha, int mat, Bairros* bairro){
     return 0;
 }
 
+Bairros* rand_bairro(int num){
+
+    switch (num){
+
+        case 1:
+
+            return &bairro1;
+
+        break;
+        case 2:
+
+            return &bairro2;
+
+        break;
+        case 3:
+
+            return &bairro3;
+
+        break;
+        case 4:
+
+            return &bairro4;
+
+        break;
+        case 5:
+
+            return &bairro5;
+
+        break;
+        case 6:
+
+            return &bairro6;
+
+        break;
+        case 7:
+
+            return &bairro7;
+
+        break;
+        case 8:
+
+            return &bairro8;
+
+        break;
+        case 9:
+
+            return &bairro9;
+
+        break;
+        default:
+
+            return NULL;
+
+        break;
+
+    }
+
+}
+
 void preenche_bairros(){
 
     Hash* ha = cria_hash_bairros(TAM);
 
-    Bairros bairro1;
     bairro1.nome[NOME] = "Jardim das Anas";
     bairro1.id = 1000;
     insere_hash_ender_aberto(ha, bairro1);
 
-    Bairros bairro2;
     bairro2.nome[NOME] = "Vila São Pedroso";
     bairro2.id = 2000;
     insere_hash_ender_aberto(ha, bairro2);
 
-    Bairros bairro3;
     bairro3.nome[NOME] = "Gugarujá";
     bairro3.id = 3000;
     insere_hash_ender_aberto(ha, bairro3);
 
-    Bairros bairro4;
     bairro4.nome[NOME] = "Igornema";
     bairro4.id = 4000;
     insere_hash_ender_aberto(ha, bairro4);
 
-    Bairros bairro5;
     bairro5.nome[NOME] = "Miicca";
     bairro5.id = 5000;
     insere_hash_ender_aberto(ha, bairro5);
 
-    Bairros bairro6;
     bairro6.nome[NOME] = "Nova Olyans";
     bairro6.id = 6000;
     insere_hash_ender_aberto(ha, bairro6);
 
-    Bairros bairro7;
     bairro7.nome[NOME] = "Fenda dos Parafusos";
     bairro7.id = 7000;
     insere_hash_ender_aberto(ha, bairro7);
 
-    Bairros bairro8;
     bairro8.nome[NOME] = "Ciriacabana";
     bairro8.id = 8000;
     insere_hash_ender_aberto(ha, bairro8);
 
-    Bairros bairro9;
     bairro9.nome[NOME] = "Vila Santa Caroline";
     bairro9.id = 9000;
     insere_hash_ender_aberto(ha, bairro9);
 
 }
-
-

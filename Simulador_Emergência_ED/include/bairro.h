@@ -1,3 +1,5 @@
+#ifndef BAIRRO_H_INCLUDED
+#define BAIRRO_H_INCLUDED
 
 typedef struct Bairros_da_cidade Bairros;
 
@@ -16,3 +18,5 @@ int insere_hash_ender_aberto(Hash* ha, Bairros bairro);
 int busca_hash_ender_aberto(Hash* ha, int mat, Bairros* bairro);
 
 void preenche_bairros();
+
+#endif // BAIRRO_H_INCLUDED
