@@ -1,0 +1,78 @@
+Switch case serviços:
+
+int indica_servico(int num, int array[]){
+
+    char texto[NOME];
+
+    switch (num){
+
+        case T_ASS:
+
+            array[3] = {1, 0, 0};
+            return array;
+
+        break;
+        case ROUBO:
+
+            array[3] = {1, 0, 0};
+            return array;
+
+        break;
+        case FURTO:
+
+            array[3] = {1, 0, 0};
+            return array;
+
+        break;
+        case FOGO1:
+
+            array[3] = {0, 1, 0};
+            return array;
+
+        break;
+        case FOGO2:
+
+            array[3] = {0, 1, 0};
+            return array;
+
+        break;
+        case ACI_CAR:
+
+            array[3] = {0, 1, 1};
+            return array;
+
+        break;
+        case ACI_DOM1:
+
+            array[3] = {0, 1, 1};
+            return array;
+
+        break;
+        case ACI_DOM2:
+
+            array[3] = {0, 1, 1};
+            return array;
+
+        break;
+        case INFARTO:
+
+            array[3] = {0, 0, 1};
+            return array;
+
+        break;
+        case RESGATO:
+
+            array[3] = {0, 1, 0};
+            return array;
+
+        break;
+        default:
+
+            array[3] = {0, 1, 0};
+            return array;
+
+        break;
+
+    }
+
+}

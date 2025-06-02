@@ -35,11 +35,15 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="include/bairro.h" />
+		<Unit filename="include/fila_de_ocorrencias.h" />
 		<Unit filename="include/ocorrencia.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="src/bairro.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/fila_de_ocorrencias.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="src/main.c">

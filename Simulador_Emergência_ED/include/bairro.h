@@ -17,6 +17,10 @@ int insere_hash_ender_aberto(Hash* ha, Bairros bairro);
 
 int busca_hash_ender_aberto(Hash* ha, int mat, Bairros* bairro);
 
+void limpa_hash(Hash* ha);
+
+void libera_hash(Hash* ha);
+
 void preenche_bairros();
 
 #endif // BAIRRO_H_INCLUDED

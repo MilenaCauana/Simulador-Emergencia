@@ -187,6 +187,54 @@ Bairros* rand_bairro(int num){
 
 }
 
+void limpa_hash(Hash* ha){
+
+    if(ha == NULL){
+
+        return;
+
+    }
+
+    for(int i=0; i < ha->tam; i++){
+
+        if(ha->itens[i] != NULL){
+
+            free(ha->itens[i]);
+            ha->itens[i] = NULL;
+
+        }
+
+    }
+
+    ha->qtd = 0;
+
+}
+
+void libera_hash(Hash* ha){
+
+    if(ha == NULL){
+
+        return;
+
+    }
+
+    for(int i=0; i < ha->tam; i++){
+
+        if(ha->itens[i] != NULL){
+
+            free(ha->itens[i]);
+            ha->itens[i] = NULL;
+
+        }
+
+    }
+
+    free(ha->itens);
+    ha->itens = NULL;
+    free(ha);
+
+}
+
 void preenche_bairros(){
 
     Hash* ha = cria_hash_bairros(TAM);

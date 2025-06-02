@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "../include/ocorrencia.h"
+#include "../include/ocorrencias.h"
 #include "../include/bairro.h"
 
 #define NOME 40
