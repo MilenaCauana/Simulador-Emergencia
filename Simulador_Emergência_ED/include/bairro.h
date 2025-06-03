@@ -1,26 +1,24 @@
 #ifndef BAIRRO_H_INCLUDED
 #define BAIRRO_H_INCLUDED
 
+//---------- DEFININDO ESTRUTURAS --------
 typedef struct Bairros_da_cidade Bairros;
+typedef struct bairros_hash Bairros_Hash;
 
-typedef struct hash Hash;
+//------ ºº FUNÇÕES DE IMPLEMENTAÇÂO DO HASHING ºº ------
 
-void confere_alloc(Hash *item);
+//---FUNÇÕES PÚBLICAS---
+Bairros_Hash *cria_hash_bairros(int tamanho);
+void bairro_libera_hash(Bairros_Hash *ha);
 
-Hash* cria_hash_bairros(int tamanho);
+int bairro_insere_hash_sem_colisao(Bairros_Hash *ha, Bairros bairro);
 
-int chave_divisao(int chave, int tamanho);
+int bairro_busca_hash_sem_colisao(Bairros_Hash *ha, int mat, Bairros* bairro);
 
-int sondagem_linear(int pos, int i, int tamanho);
+//Bairros* rand_bairro(Bairros_Hash *ha, int num);
 
-int insere_hash_ender_aberto(Hash* ha, Bairros bairro);
+void limpa_hash_bairros(Bairros_Hash *ha);
 
-int busca_hash_ender_aberto(Hash* ha, int mat, Bairros* bairro);
-
-void limpa_hash(Hash* ha);
-
-void libera_hash(Hash* ha);
-
-void preenche_bairros();
+Bairros_Hash* preenche_bairros();
 
 #endif // BAIRRO_H_INCLUDED

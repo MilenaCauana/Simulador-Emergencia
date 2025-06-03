@@ -35,3 +35,61 @@
 
 1748874647 c:\users\igor pereira marani\onedrive\Área de trabalho\programas - meus\github\simulador-emergencia\simulador_emergência_ed\include\fila_de_ocorrencias.h
 
+1748881098 source:c:\users\milena\documents\aprendendo-github\simulador-emergencia\simulador_emergência_ed\src\fila_de_ocorrencias.c
+	<stdio.h>
+	<stdlib.h>
+	<windows.h>
+	<time.h>
+	"../include/fila_de_ocorrencias.h"
+	"../include/ocorrencias.h"
+
+1748881095 c:\users\milena\documents\aprendendo-github\simulador-emergencia\simulador_emergência_ed\include\fila_de_ocorrencias.h
+
+1748881095 c:\users\milena\documents\aprendendo-github\simulador-emergencia\simulador_emergência_ed\include\ocorrencias.h
+
+1748881098 source:c:\users\milena\documents\aprendendo-github\simulador-emergencia\simulador_emergência_ed\src\main.c
+	<stdio.h>
+	<stdlib.h>
+
+1748881098 source:c:\users\milena\documents\aprendendo-github\simulador-emergencia\simulador_emergência_ed\src\ocorrencias.c
+	<stdio.h>
+	<stdlib.h>
+	"../include/ocorrencias.h"
+	"../include/bairro.h"
+
+1748967182 c:\users\milena\documents\aprendendo-github\simulador-emergencia\simulador_emergência_ed\include\bairro.h
+
+1748881095 source:c:\users\milena\documents\aprendendo-github\simulador-emergencia\simulador_emergência_ed\structs.c
+	<stdio.h>
+	<stdlib.h>
+	<stdbool.h>
+
+1748967182 source:c:\users\milena\documents\aprendendo-github\simulador-emergencia\simulador_emergência_ed\src\policia.c
+	<stdio.h>
+	<stdlib.h>
+	<stdbool.h>
+	"../include/policia.h"
+
+1748967182 c:\users\milena\documents\aprendendo-github\simulador-emergencia\simulador_emergência_ed\include\policia.h
+
+1748974775 source:c:\users\milena\documents\aprendendo-github\simulador-emergencia\simulador_emergência_ed\src\bairro.c
+	<stdio.h>
+	<stdlib.h>
+	"../include/bairro.h"
+
+1748973441 source:c:\users\milena\documents\aprendendo-github\simulador-emergencia\simulador_emergência_ed\src\hospital.c
+	<stdio.h>
+	<stdlib.h>
+	<stdbool.h>
+	"../include/hospital.h"
+
+1748973322 c:\users\milena\documents\aprendendo-github\simulador-emergencia\simulador_emergência_ed\include\hospital.h
+
+1748974031 source:c:\users\milena\documents\aprendendo-github\simulador-emergencia\simulador_emergência_ed\src\bombeiro.c
+	<stdio.h>
+	<stdlib.h>
+	<stdbool.h>
+	"../include/bombeiro.h"
+
+1748973878 c:\users\milena\documents\aprendendo-github\simulador-emergencia\simulador_emergência_ed\include\bombeiro.h
+
