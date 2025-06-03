@@ -7,14 +7,14 @@
 
 #define NOME 40
 
-typedef struct Bairros_da_cidade{
+typedef struct{
 
     char nome[NOME];
     int id;
 
 }Bairros;
 
-typedef struct pessoa{
+typedef struct{
 
     int id;
     char nome[NOME];
@@ -22,10 +22,11 @@ typedef struct pessoa{
 
 }Morador;
 
-typedef struct emergencias{
+typedef struct{
 
     int id;
     char tipo[NOME];
+    char *bairro_nome;
     int servico[3];
     Morador *vitima;
 
@@ -39,7 +40,7 @@ typedef struct no{
 
 }No;
 
-typedef struct descritor_fila{
+typedef struct {
 
     int qtd_elem;
     No *primeiro;
@@ -59,38 +60,13 @@ Descritor cria_fila(){
 
 }
 
-void confere_aloc(No *novo){
-
-    if(novo == NULL){
-
-        printf("ERRO AO ALOCAR MEMÓRIA!");
-
-        return 0;
-
-    }
-}
-
 void exibe_ocorrencia(No *novo){
 
     printf("\n====================================\n");
     printf("Ocorrencia: %s\n", novo->incidente->tipo);
     printf("ID da ocorrencia: %d\n", novo->incidente->id);
     printf("Bairro: %s", novo->incidente->vitima->reside->nome);
-    if(novo->incidente->servico[0] == 1){
-
-        printf("Serviço Requisitado: Polícia\n");
-
-    }
-    if(novo->incidente->servico[1] == 1){
-
-        printf("Serviço Requisitado: Bombeiro\n");
-
-    }
-    if(novo->incidente->servico[2] == 1){
-
-        printf("Serviço Requisitado: Ambulancia\n");
-
-    }
+    //COLOCAR PRINTF DOS SERVIÇOS REQUISITADOS
     printf("\n");
     printf("\n------------------------------------\n");
     printf("\n\jDados da vítima\j\n");
@@ -102,7 +78,13 @@ void exibe_ocorrencia(No *novo){
 No* cria_no(Descritor *D){
 
     No* novo = malloc(sizeof(No));
-    confere_alloc(&novo);
+
+    if(novo == NULL){
+
+        printf("ERRO AO ALOCAR MEMÓRIA!");
+        return 0;
+
+    }
     novo->incidente = cria_ocorrencia();
     novo->ant = NULL;
     novo->prox = NULL;
@@ -177,18 +159,11 @@ int gera_tempo(){
 
 }
 
-int gera_qtd_no(){
-
-    srand(time(NULL));
-    return 5 + (rand() % (20 - 5 + 1));
-
-}
-
 void enfileirando(){
 
     Descritor fila = cria_fila();
-
-    int qtd_nos = gera_qtd_no();
+    srand(time(NULL));
+    int qtd_nos = 5 + (rand() % (20 - 5 + 1));
 
     for(int i = 0; i < qtd_nos; i++){
 

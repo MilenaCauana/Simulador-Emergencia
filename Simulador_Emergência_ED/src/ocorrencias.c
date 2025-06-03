@@ -5,7 +5,7 @@
 
 #define NOME 40
 
-typedef struct pessoa{
+typedef struct{
 
     int id;
     char nome[NOME];
@@ -13,7 +13,7 @@ typedef struct pessoa{
 
 }Morador;
 
-typedef struct emergencias{
+typedef struct{
 
     int id;
     char tipo[NOME];
@@ -44,168 +44,120 @@ int gera_id_ocorrencia(){
 
 }
 
-char seleciona_tipo_ocorrencia(int num){
+char* seleciona_tipo_ocorrencia(int num){
 
-    char texto[NOME];
+    char* texto = (char*) malloc(sizeof(NOME));
+
+    if(texto == NULL){
+
+        peintf("ERRO DE ALOCACAO DE MEMORIA!");
+        return 0;
+
+    }
 
     switch (num){
 
         case T_ASS:
 
-            return "TENTATIVA DE ASSASSINATO!";
+            texto = "TENTATIVA DE ASSASSINATO!";
 
         break;
         case ROUBO:
 
-            return "PESSOA FOI ASSALTADA!";
+            texto = "PESSOA FOI ASSALTADA!";
 
         break;
         case FURTO:
 
-            return "PESSOA FOI FURTADA!";
+            texto = "PESSOA FOI FURTADA!";
 
         break;
         case FOGO1:
 
-            return "CASA PEGANDO FOGO!";
+            texto = "CASA PEGANDO FOGO!";
 
         break;
         case FOGO2:
 
-            return "ESTABELECIMENTO PEGANDO FOGO!";
+            texto = "ESTABELECIMENTO PEGANDO FOGO!";
 
         break;
         case ACI_CAR:
 
-            return "ACIDENTE DE CARRO!";
+            texto = "ACIDENTE DE CARRO!";
 
         break;
         case ACI_DOM1:
 
-            return "PESSOA CAIU DA ESCADA!";
+            texto = "PESSOA CAIU DA ESCADA!";
 
         break;
         case ACI_DOM2:
 
-            return "PESSOA CAIU E BATEU A CABEÇA";
+            texto = "PESSOA CAIU E BATEU A CABECA";
 
         break;
         case INFARTO:
 
-            return "PESSOA TEVE UM INFARTO";
+            texto = "PESSOA TEVE UM INFARTO";
 
         break;
         case RESGATO:
 
-            return "Gato preso na árvore!";
+            texto = "Gato preso na arvore!";
 
         break;
         default:
 
-            return "Gato preso na árvore!";
+            texto = "Gato preso na arvore!";
 
         break;
 
     }
+
+    return texto;
 
 }
 
-int indica_servico(int num, int array[]){
+int* indica_servico(int num){
 
-    char texto[NOME];
+    static int array[3];
 
-    switch (num){
-
+        switch (num) {
         case T_ASS:
-
-            array[0] = 1;
-            array[1] = 0;
-            array[2] = 0;
-            return array;
-
-        break;
         case ROUBO:
-
-            array[0] = 1;
-            array[1] = 0;
-            array[2] = 0;
-            return array;
-
-        break;
         case FURTO:
 
-            array[0] = 1;
-            array[1] = 0;
-            array[2] = 0;
-            return array;
+            array[0] = 1; array[1] = 0; array[2] = 0;
 
-        break;
+            break;
         case FOGO1:
-
-            array[0] = 0;
-            array[1] = 1;
-            array[2] = 0;
-            return array;
-
-        break;
         case FOGO2:
-
-            array[0] = 0;
-            array[1] = 1;
-            array[2] = 0;
-            return array;
-
-        break;
-        case ACI_CAR:
-
-            array[0] = 0;
-            array[1] = 1;
-            array[2] = 1;
-            return array;
-
-        break;
-        case ACI_DOM1:
-
-            array[0] = 0;
-            array[1] = 1;
-            array[2] = 1;
-            return array;
-
-        break;
-        case ACI_DOM2:
-
-            array[0] = 0;
-            array[1] = 1;
-            array[2] = 1;
-            return array;
-
-        break;
-        case INFARTO:
-
-            array[0] = 0;
-            array[1] = 0;
-            array[2] = 1;
-            return array;
-
-        break;
         case RESGATO:
 
-            array[0] = 0;
-            array[1] = 1;
-            array[2] = 0;
-            return array;
+            array[0] = 0; array[1] = 1; array[2] = 0;
 
-        break;
+            break;
+        case ACI_CAR:
+        case ACI_DOM1:
+        case ACI_DOM2:
+
+            array[0] = 0; array[1] = 1; array[2] = 1;
+
+            break;
+        case INFARTO:
+
+            array[0] = 0; array[1] = 0; array[2] = 1;
+
+            break;
         default:
 
-            array[0] = 0;
-            array[1] = 1;
-            array[2] = 0;
-            return array;
+            array[0] = 0; array[1] = 1; array[2] = 0;
 
-        break;
-
+            break;
     }
+
+    return array;
 
 }
 
@@ -216,104 +168,123 @@ int gera_id_morador(){
 
 }
 
-char seleciona_nome_morador(int num){
+char* seleciona_nome_morador(int num){
+
+    char* name = (char*) malloc(sizeof(NOME));
+
+    if(name == NULL){
+
+        printf("ERRO DE ALOCACAO DE MEMORIA!");
+        return 0;
+
+    }
 
     if(num <= 5){
 
-        return "João Silva Santos";
+        name = "João Silva Santos";
 
     }else if(num >= 6 && num <= 10){
 
-        return "Pedro Oliveira Costa";
+        name = "Pedro Oliveira Costa";
 
     }else if(num >= 11 && num <= 15){
 
-        return "Lucas Pereira Almeida";
+        name = "Lucas Pereira Almeida";
 
     }else if(num >= 16 && num <= 20){
 
-        return "Gabriel Souza Rodrigues";
+        name = "Gabriel Souza Rodrigues";
 
     }else if(num >= 21 && num <= 25){
 
-        return "Rafael Fernandes Lima";
+        name = "Rafael Fernandes Lima";
 
     }else if(num >= 26 && num <= 30){
 
-        return "Carlos Mendes Carvalho";
+        name = "Carlos Mendes Carvalho";
 
     }else if(num >= 31 && num <= 35){
 
-        return "Daniel Barbosa Martins";
+        name = "Daniel Barbosa Martins";
 
     }else if(num >= 36 && num <= 40){
 
-        return "André Rocha Nunes";
+        name = "André Rocha Nunes";
 
     }else if(num >= 41 && num <= 45){
 
-        return "Marcelo Castro Ribeiro";
+        name = "Marcelo Castro Ribeiro";
 
     }else if(num >= 46 && num <= 50){
 
-        return "Felipe Gomes Duarte";
+        name = "Felipe Gomes Duarte";
 
     }else if(num >= 51 && num <= 55){
 
-        return "Maria Ferreira Alves";
+        name = "Maria Ferreira Alves";
 
     }else if(num >= 56 && num <= 60){
 
-        return "Ana Santos Monteiro";
+        name = "Ana Santos Monteiro";
 
     }else if(num >= 61 && num <= 65){
 
-        return "Sofia Lima Xavier";
+        name = "Sofia Lima Xavier";
 
     }else if(num >= 66 && num <= 70){
 
-        return "Laura Cunha Neves";
+        name = "Laura Cunha Neves";
 
     }else if(num >= 71 && num <= 75){
 
-        return "Beatriz Cardoso Dias";
+        name = "Beatriz Cardoso Dias";
 
     }else if(num >= 76 && num <= 80){
 
-        return "Camila Teixeira Moreira";
+        name = "Camila Teixeira Moreira";
 
     }else if(num >= 81 && num <= 85){
 
-        return "Juliana Andrade Pinto";
+        name = "Juliana Andrade Pinto";
 
     }else if(num >= 86 && num <= 90){
 
-        return "Isabel Moraes Peixoto";
+        name = "Isabel Moraes Peixoto";
 
     }else if(num >= 91 && num <= 95){
 
-        return "Carolina Azevedo Guimarães";
+        name = "Carolina Azevedo Guimarães";
 
     }else if(num >= 96 && num <= 100){
 
-        return "Amanda Correia Viana";
+        name = "Amanda Correia Viana";
 
     }
+
+    return name;
 
 }
 
 Morador* cria_morador(int region){
 
-    Morador* residente;
-    residente->id = (gera_id_morador() * 10) + region;
+    Morador* residente = (Morador*) malloc(sizeof(Morador));
+    if(residente == NULL){
+
+        printf("ERRO AO ALOCAR MEMÓRIA!");
+
+        return 0;
+
+    }
+    srand(time(NULL));
+    residente->id = 100 + ((rand() % (1000 - 100 + 1)) * 10) + region;
     residente->nome[NOME] = seleciona_nome_morador(residente->id / 100);
-    residente->reside = rand_bairro();
+    return residente;
 
 }
 
 Ocorrencia* cria_ocorrencia(){
 
-    Ocorrencia* novo = malloc(sizeof(Ocorrencia));
+    Ocorrencia* novo = (Ocorrencia*) malloc(sizeof(Ocorrencia));
     if(novo == NULL){
 
         printf("ERRO AO ALOCAR MEMÓRIA!");
@@ -322,9 +293,10 @@ Ocorrencia* cria_ocorrencia(){
 
     }
 
-    novo->id = gera_id_ocorrencia();
-    novo->tipo[NOME] = seleciona_tipo_ocorrencia(novo->id / 1000);
-    novo->servico[3] = indica_servico(novo->id / 1000, novo->servico);
+    srand(time(NULL));
+    novo->id = 1000 + (rand() % (10000 - 1000 + 1));
+    novo->tipo = seleciona_tipo_ocorrencia(novo->id / 1000);
+    novo->servico[3] = indica_servico(novo->id / 1000);
     novo->vitima = cria_morador(novo->id % 10);
     return novo;
 
