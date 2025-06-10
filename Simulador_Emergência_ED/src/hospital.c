@@ -6,21 +6,6 @@
 //Definindo o tamanho da tabela hash
 #define TAMANHO 7
 
-//---------- DEFININDO ESTRUTURAS --------
-struct hospital{
-
-    //char nome[40]; Ainda não definimos se terá nome
-    int id;
-    int ambulancias; //Total de ambulancias no hospital
-    int ambulancias_disp; //Quantidade de ambulancias disponíveis no momento para atendimento
-    bool disponivel; //Se não houver ambulancia disponível, então o hospital X nao esta disponível
-};
-
-struct hospital_hash{
-    int qtd, tamanho; //qtd -> diz respeito à quantidade de elementos já armazenados, e tamanho ao tamanho da tabela hash
-    Hospital **itens;
-};
-
 //------ ºº FUNÇÕES DE IMPLEMENTAÇÂO DO HASHING ºº ------
 
 //---FUNÇÕES PRIVADAS---

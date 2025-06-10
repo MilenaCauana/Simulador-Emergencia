@@ -6,22 +6,6 @@
 #define NOME 30
 #define TAMANHO 11
 
-
-//---------- DEFININDO ESTRUTURAS --------
-struct Bairros_da_cidade{
-
-    char nome[NOME];
-    int id;
-
-};
-
-struct bairros_hash{
-
-    int qtd, tamanho;//qtd -> diz respeito à quantidade de elementos já armazenados, e tamanho ao tamanho da tabela hash
-    Bairros **itens;
-
-};
-
 //------ ºº FUNÇÕES DE IMPLEMENTAÇÂO DO HASHING ºº ------
 
 //---FUNÇÕES PRIVADAS---
@@ -132,25 +116,24 @@ int bairro_insere_hash_sem_colisao(Bairros_Hash *ha, Bairros bairro){
 /*
 *---Função de busca da tabela--
 * Recebe: um ponteiro para a tabela hash,  e o bairro que será buscada
-* Retorna: inteiro booleano para definir se deu certo a busca
+* Retorna: = NULL se não der certo ou um ponteiro para o bairro
 *
 * Para receber o aluno, mandar como parâmetro um ponteiro do tipo bairro, o qual será atribuido as informações
 *
 */
-int bairro_busca_hash_sem_colisao(Bairros_Hash* ha, int id, Bairros *bairro){
+Bairros* bairro_busca_hash_sem_colisao(Bairros_Hash* ha, int id){
 
    if (ha == NULL){
-    return 0;
+    return NULL;
    }
 
    int pos = bairro_chave_divisao(id, ha -> tamanho);
 
    if (ha -> itens[pos] == NULL){
-    return 0;
+    return NULL;
    }
 
-   *bairro = *(ha -> itens[pos]);
-   return 1;
+   return ha -> itens[pos];;
 }
 
 /*
@@ -200,12 +183,12 @@ Bairros_Hash* preenche_bairros(){
     bairro_insere_hash_sem_colisao(ha, bairro1);
 
     Bairros bairro2;
-    strcpy (bairro2.nome, "Vila São Pedroso");
+    strcpy (bairro2.nome, "Vila Sao Pedroso");
     bairro2.id = 1002;
     bairro_insere_hash_sem_colisao(ha, bairro2);
 
     Bairros bairro3;
-    strcpy (bairro3.nome, "Gugarujá");
+    strcpy (bairro3.nome, "Gugaruja");
     bairro3.id = 1003;
     bairro_insere_hash_sem_colisao(ha, bairro3);
 
@@ -240,4 +223,40 @@ Bairros_Hash* preenche_bairros(){
     bairro_insere_hash_sem_colisao(ha, bairro9);
 
     return ha;
+}
+
+/*
+*---Função que exibe todos os bairros--
+* Recebe: ponteiro para a tabela de bairros
+* Retorna:
+*
+*/
+void bairros_exibir(Bairros_Hash *ha){
+    if (ha == NULL) {
+        printf("Erro: Tabela hash de bairros nao inicializada.\n");
+        return;
+    }
+
+    for (int i = 0; i < ha -> tamanho; i++){
+        if (ha -> itens[i] != NULL){
+            printf("\n====== Bairro %s ======", ha -> itens[i] -> nome);
+            printf("ID: %d\n", ha -> itens[i] -> id);
+        }
+    }
+}
+
+/*
+*---Função que exibe bairro específico--
+* Recebe: Ponteiro para bairro específico
+* Retorna:
+*
+*/
+void exibir_bairro_especifico(Bairros *bairro){
+    if (bairro == NULL) {
+        printf("Erro: Bairro nao existe.\n");
+        return;
+    }
+
+    printf("\n====== Bairro %s ======", bairro -> nome);
+    printf("ID: %d\n", bairro -> id);
 }

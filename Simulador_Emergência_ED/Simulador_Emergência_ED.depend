@@ -35,63 +35,94 @@
 
 1748874647 c:\users\igor pereira marani\onedrive\Área de trabalho\programas - meus\github\simulador-emergencia\simulador_emergência_ed\include\fila_de_ocorrencias.h
 
-1748881098 source:c:\users\milena\documents\aprendendo-github\simulador-emergencia\simulador_emergência_ed\src\fila_de_ocorrencias.c
+1749489802 source:c:\users\milena\documents\aprendendo-github\simulador-emergencia\simulador_emergência_ed\src\fila_de_ocorrencias.c
 	<stdio.h>
 	<stdlib.h>
-	<windows.h>
+	<stdbool.h>
 	<time.h>
+	<string.h>
 	"../include/fila_de_ocorrencias.h"
 	"../include/ocorrencias.h"
-
-1748881095 c:\users\milena\documents\aprendendo-github\simulador-emergencia\simulador_emergência_ed\include\fila_de_ocorrencias.h
-
-1748881095 c:\users\milena\documents\aprendendo-github\simulador-emergencia\simulador_emergência_ed\include\ocorrencias.h
-
-1748881098 source:c:\users\milena\documents\aprendendo-github\simulador-emergencia\simulador_emergência_ed\src\main.c
-	<stdio.h>
-	<stdlib.h>
-
-1748881098 source:c:\users\milena\documents\aprendendo-github\simulador-emergencia\simulador_emergência_ed\src\ocorrencias.c
-	<stdio.h>
-	<stdlib.h>
-	"../include/ocorrencias.h"
+	"../include/policia.h"
+	"../include/bombeiro.h"
+	"../include/hospital.h"
 	"../include/bairro.h"
 
-1748967182 c:\users\milena\documents\aprendendo-github\simulador-emergencia\simulador_emergência_ed\include\bairro.h
+1749489794 c:\users\milena\documents\aprendendo-github\simulador-emergencia\simulador_emergência_ed\include\fila_de_ocorrencias.h
+	"ocorrencias.h"
+	"policia.h"
+	"bombeiro.h"
+	"hospital.h"
+	"bairro.h"
 
-1748881095 source:c:\users\milena\documents\aprendendo-github\simulador-emergencia\simulador_emergência_ed\structs.c
+1749489723 c:\users\milena\documents\aprendendo-github\simulador-emergencia\simulador_emergência_ed\include\ocorrencias.h
+	<stdio.h>
+	<stdlib.h>
+	<stdbool.h>
+	<string.h>
+	"../include/ocorrencias.h"
+	"../include/morador.h"
+	"../include/bairro.h"
+
+1749489794 source:c:\users\milena\documents\aprendendo-github\simulador-emergencia\simulador_emergência_ed\src\main.c
+	<stdio.h>
+	<stdlib.h>
+	<time.h>
+	<windows.h>
+	<locale.h>
+	"../include/bairro.h"
+	"../include/policia.h"
+	"../include/bombeiro.h"
+	"../include/hospital.h"
+	"../include/ocorrencias.h"
+	"../include/fila_de_ocorrencias.h"
+
+1749489723 source:c:\users\milena\documents\aprendendo-github\simulador-emergencia\simulador_emergência_ed\src\ocorrencias.c
+	<stdio.h>
+	<stdlib.h>
+	<stdbool.h>
+	<string.h>
+	<time.h>
+	"../include/ocorrencias.h"
+	"../include/morador.h"
+	"../include/bairro.h"
+
+1749485465 c:\users\milena\documents\aprendendo-github\simulador-emergencia\simulador_emergência_ed\include\bairro.h
+
+1749320114 source:c:\users\milena\documents\aprendendo-github\simulador-emergencia\simulador_emergência_ed\structs.c
 	<stdio.h>
 	<stdlib.h>
 	<stdbool.h>
 
-1748967182 source:c:\users\milena\documents\aprendendo-github\simulador-emergencia\simulador_emergência_ed\src\policia.c
+1749485465 source:c:\users\milena\documents\aprendendo-github\simulador-emergencia\simulador_emergência_ed\src\policia.c
 	<stdio.h>
 	<stdlib.h>
 	<stdbool.h>
 	"../include/policia.h"
 
-1748967182 c:\users\milena\documents\aprendendo-github\simulador-emergencia\simulador_emergência_ed\include\policia.h
+1749485478 c:\users\milena\documents\aprendendo-github\simulador-emergencia\simulador_emergência_ed\include\policia.h
+	<stdbool.h>
 
-1748974775 source:c:\users\milena\documents\aprendendo-github\simulador-emergencia\simulador_emergência_ed\src\bairro.c
+1749486031 source:c:\users\milena\documents\aprendendo-github\simulador-emergencia\simulador_emergência_ed\src\bairro.c
 	<stdio.h>
 	<stdlib.h>
 	"../include/bairro.h"
 
-1748973441 source:c:\users\milena\documents\aprendendo-github\simulador-emergencia\simulador_emergência_ed\src\hospital.c
+1749486031 source:c:\users\milena\documents\aprendendo-github\simulador-emergencia\simulador_emergência_ed\src\hospital.c
 	<stdio.h>
 	<stdlib.h>
 	<stdbool.h>
 	"../include/hospital.h"
 
-1748973322 c:\users\milena\documents\aprendendo-github\simulador-emergencia\simulador_emergência_ed\include\hospital.h
+1749485465 c:\users\milena\documents\aprendendo-github\simulador-emergencia\simulador_emergência_ed\include\hospital.h
 
-1748974031 source:c:\users\milena\documents\aprendendo-github\simulador-emergencia\simulador_emergência_ed\src\bombeiro.c
+1749486031 source:c:\users\milena\documents\aprendendo-github\simulador-emergencia\simulador_emergência_ed\src\bombeiro.c
 	<stdio.h>
 	<stdlib.h>
 	<stdbool.h>
 	"../include/bombeiro.h"
 
-1748973878 c:\users\milena\documents\aprendendo-github\simulador-emergencia\simulador_emergência_ed\include\bombeiro.h
+1749485465 c:\users\milena\documents\aprendendo-github\simulador-emergencia\simulador_emergência_ed\include\bombeiro.h
 
 1748977082 source:c:\users\igor pereira marani\onedrive\Área de trabalho\programas - meus\github\simulador-emergencia\simulador_emergência_ed\src\bombeiro.c
 	<stdio.h>
@@ -116,4 +147,16 @@
 	"../include/policia.h"
 
 1748977082 c:\users\igor pereira marani\onedrive\Área de trabalho\programas - meus\github\simulador-emergencia\simulador_emergência_ed\include\policia.h
+
+1749486031 source:c:\users\milena\documents\aprendendo-github\simulador-emergencia\simulador_emergência_ed\src\morador.c
+	<stdio.h>
+	<stdlib.h>
+	<stdbool.h>
+	<string.h>
+	"../include/morador.h"
+	"../include/bairro.h"
+	"../include/ocorrencias.h"
+
+1749482525 c:\users\milena\documents\aprendendo-github\simulador-emergencia\simulador_emergência_ed\include\morador.h
+	"bairro.h"
 

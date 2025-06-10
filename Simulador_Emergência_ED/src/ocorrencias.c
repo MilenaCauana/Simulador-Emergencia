@@ -1,303 +1,249 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
+#include <string.h>
+#include <time.h>
 #include "../include/ocorrencias.h"
+#include "../include/morador.h"
 #include "../include/bairro.h"
 
-#define NOME 40
+#define MAX 40
 
-typedef struct{
-
-    int id;
-    char nome[NOME];
-    Bairros *reside;
-
-}Morador;
-
-typedef struct{
-
-    int id;
-    char tipo[NOME];
-    int servico[3];
-    Morador *vitima;
-
-}Ocorrencia;
-
+//--> enum privado!
 typedef enum tipo_de_ocorrencia{
-
     T_ASS = 0,
     ROUBO,
     FURTO,
-    FOGO1,
-    FOGO2,
-    ACI_CAR,
-    ACI_DOM1,
-    ACI_DOM2,
+    FOGO_RESIDENCIA,
+    FOGO_COMERCIAL,
+    ACI_VEICULAR,
+    ACI_DOM_LEVE,
+    ACI_DOM_GRAVE,
     INFARTO,
-    RESGATO
+    RESGATE_ANIMAL,
+    VIOLENCIA_DOMESTICA,
+    DESABAMENTO,
+    PESSOA_DESAPARECIDA,
+    MANIFESTACAO,
+    ENVOLVIMENTO_ARMA,
+    SUICIDIO,
+    AFOGAMENTO,
+    INUNDACAO,
+    FALSA_ALARME, // Para casos de default ou erro
+    NUM_TIPOS_OCORRENCIA
+} tipo_de_ocorrencia;
 
-};
+//------ ºº FUNÇÕES ºº ------
 
-int gera_id_ocorrencia(){
+/*
+*---Função Geradora de IDs--
+* Recebe: sem parâmetros
+* Retorna: inteiro
+*
+*/
+void gera_id_ocorrencia(int num, Ocorrencia *ocorrencia){
 
-    srand(time(NULL));
-    return 1000 + (rand() % (10000 - 1000 + 1));
+     int complemento = rand() % 1000; // Gera um ID único de 0 a 999
+
+     ocorrencia -> id = (num * 1000) + complemento;
 
 }
 
-char* seleciona_tipo_ocorrencia(int num){
+/*
+*---Função cria ocorrencia--
+* Recebe: nada
+* Retorna: Ocorrencia criada
+*
+* - Nessa função, o tipo da ocorrência, sua prioridade e quais serviços serão necessarios já serão preenchidos
+*
+*/
+Ocorrencia* cria_ocorrencia(Bairros_Hash* ha){
 
-    char* texto = (char*) malloc(sizeof(NOME));
+     Ocorrencia* ocorrencia = (Ocorrencia*) malloc(sizeof(Ocorrencia));
 
-    if(texto == NULL){
-
-        peintf("ERRO DE ALOCACAO DE MEMORIA!");
-        return 0;
-
+     if(ocorrencia == NULL){
+        printf("ERRO AO ALOCAR MEMORIA!");
+        return NULL;
     }
+
+    // Inicializa todos os serviços como false antes de definir
+    ocorrencia->servico[0] = false; // Polícia
+    ocorrencia->servico[1] = false; // Bombeiro
+    ocorrencia->servico[2] = false; // Hospital
+
+    //pegando o tempo de registro
+    ocorrencia->tempo_registro = time(NULL);
+    ocorrencia->tempo_atendimento = 0; // Inicialmente não atendida
+
+    //Pegando um numero aleatório para selecionar o tipo da ocorrência
+    int num = rand() % NUM_TIPOS_OCORRENCIA;
 
     switch (num){
 
-        case T_ASS:
+       case T_ASS:
+            strcpy(ocorrencia->tipo, "TENTATIVA DE HOMICIDIO!");
+            ocorrencia->prioridade = 5;
+            ocorrencia->servico[0] = true; // Polícia
+            ocorrencia->servico[2] = true; // Hospital
+            break;
 
-            texto = "TENTATIVA DE ASSASSINATO!";
-
-        break;
         case ROUBO:
+            strcpy(ocorrencia->tipo, "ROUBO EM ANDAMENTO!");
+            ocorrencia->prioridade = 4;
+            ocorrencia->servico[0] = true; // Polícia
+            break;
 
-            texto = "PESSOA FOI ASSALTADA!";
-
-        break;
         case FURTO:
+            strcpy(ocorrencia->tipo, "FURTO REGISTRADO!");
+            ocorrencia->prioridade = 2;
+            ocorrencia->servico[0] = true; // Polícia
+            break;
 
-            texto = "PESSOA FOI FURTADA!";
+        case FOGO_RESIDENCIA:
+            strcpy(ocorrencia->tipo, "INCENDIO EM RESIDENCIA!");
+            ocorrencia->prioridade = 5;
+            ocorrencia->servico[1] = true; // Bombeiro
+            ocorrencia->servico[2] = true; // Hospital (Pode haver vítimas)
+            break;
 
-        break;
-        case FOGO1:
+        case FOGO_COMERCIAL:
+            strcpy(ocorrencia->tipo, "INCENDIO EM ESTABELECIMENTO COMERCIAL!");
+            ocorrencia->prioridade = 5;
+            ocorrencia->servico[1] = true; // Bombeiro
+            ocorrencia->servico[2] = true; // Hospital (Pode haver vítimas)
+            ocorrencia->servico[0] = true; // Polícia (Controle de área/evacuação)
+            break;
 
-            texto = "CASA PEGANDO FOGO!";
+        case ACI_VEICULAR:
+            strcpy(ocorrencia->tipo, "ACIDENTE DE VEICULO (POTENCIAL VITIMAS)!");
+            ocorrencia->prioridade = 4;
+            ocorrencia->servico[0] = true; // Polícia
+            ocorrencia->servico[1] = true; // Bombeiro (Resgate)
+            ocorrencia->servico[2] = true; // Hospital (Atendimento a feridos)
+            break;
 
-        break;
-        case FOGO2:
+        case ACI_DOM_LEVE:
+            strcpy(ocorrencia->tipo, "ACIDENTE DOMESTICO (LESAO LEVE)!");
+            ocorrencia->prioridade = 2;
+            ocorrencia->servico[2] = true; // Hospital
+            break;
 
-            texto = "ESTABELECIMENTO PEGANDO FOGO!";
+        case ACI_DOM_GRAVE:
+            strcpy(ocorrencia->tipo, "ACIDENTE DOMESTICO (TRAUMA GRAVE)!");
+            ocorrencia->prioridade = 5;
+            ocorrencia->servico[2] = true; // Hospital
+            ocorrencia->servico[1] = true; // Bombeiro (Se precisar de resgate)
+            break;
 
-        break;
-        case ACI_CAR:
-
-            texto = "ACIDENTE DE CARRO!";
-
-        break;
-        case ACI_DOM1:
-
-            texto = "PESSOA CAIU DA ESCADA!";
-
-        break;
-        case ACI_DOM2:
-
-            texto = "PESSOA CAIU E BATEU A CABECA";
-
-        break;
         case INFARTO:
+            strcpy(ocorrencia->tipo, "EMERGENCIA MEDICA: INFARTO!");
+            ocorrencia->prioridade = 5;
+            ocorrencia->servico[2] = true; // Hospital
+            break;
 
-            texto = "PESSOA TEVE UM INFARTO";
+        case RESGATE_ANIMAL:
+            strcpy(ocorrencia->tipo, "RESGATE DE ANIMAL EM SITUACAO DE RISCO!");
+            ocorrencia->prioridade = 1;
+            ocorrencia->servico[1] = true; // Bombeiro
+            break;
 
-        break;
-        case RESGATO:
+        case VIOLENCIA_DOMESTICA:
+            strcpy(ocorrencia->tipo, "VIOLENCIA DOMESTICA!");
+            ocorrencia->prioridade = 5;
+            ocorrencia->servico[0] = true; // Polícia
+            ocorrencia->servico[2] = true; // Hospital (Pode haver feridos)
+            break;
 
-            texto = "Gato preso na arvore!";
+        case DESABAMENTO:
+            strcpy(ocorrencia->tipo, "DESABAMENTO DE ESTRUTURA!");
+            ocorrencia->prioridade = 5;
+            ocorrencia->servico[0] = true; // Polícia (Isolamento)
+            ocorrencia->servico[1] = true; // Bombeiro (Busca e Resgate)
+            ocorrencia->servico[2] = true; // Hospital (Atendimento a feridos)
+            break;
 
-        break;
+        case PESSOA_DESAPARECIDA:
+            strcpy(ocorrencia->tipo, "PESSOA DESAPARECIDA!");
+            ocorrencia->prioridade = 3;
+            ocorrencia->servico[0] = true; // Polícia
+            break;
+
+        case MANIFESTACAO:
+            strcpy(ocorrencia->tipo, "MANIFESTACAO/DISTURBIO EM VIA PUBLICA!");
+            ocorrencia->prioridade = 3;
+            ocorrencia->servico[0] = true; // Polícia (Controle)
+            break;
+
+        case ENVOLVIMENTO_ARMA:
+            strcpy(ocorrencia->tipo, "ENVOLVIMENTO COM ARMA DE FOGO/BRANCA!");
+            ocorrencia->prioridade = 5;
+            ocorrencia->servico[0] = true; // Polícia (Altíssimo risco)
+            ocorrencia->servico[2] = true; // Hospital (Pode haver feridos)
+            break;
+
+        case SUICIDIO:
+            strcpy(ocorrencia->tipo, "TENTATIVA DE SUICIDIO!");
+            ocorrencia->prioridade = 5;
+            ocorrencia->servico[0] = true; // Polícia (Controle da situação)
+            ocorrencia->servico[2] = true; // Hospital (Atendimento psiquiátrico/médico)
+            break;
+
+        case AFOGAMENTO:
+            strcpy(ocorrencia->tipo, "OCORRRECIA DE AFOGAMENTO!");
+            ocorrencia->prioridade = 5;
+            ocorrencia->servico[1] = true; // Bombeiro (Resgate aquático)
+            ocorrencia->servico[2] = true; // Hospital (Atendimento médico)
+            break;
+
+        case INUNDACAO:
+            strcpy(ocorrencia->tipo, "AREA DE INUNDACAO/ALAGAMENTO!");
+            ocorrencia->prioridade = 4;
+            ocorrencia->servico[1] = true; // Bombeiro (Resgate, avaliação de risco)
+            ocorrencia->servico[0] = true; // Polícia (Isolamento da área)
+            break;
+
+        case FALSA_ALARME:
+            strcpy(ocorrencia->tipo, "FALSO ALARME OU OCORRENCIA SEM GRAVIDADE!");
+            ocorrencia->prioridade = 0;
+            // Nenhum serviço acionado, ou apenas polícia para verificar
+            break;
+
         default:
-
-            texto = "Gato preso na arvore!";
-
-        break;
-
-    }
-
-    return texto;
-
-}
-
-int* indica_servico(int num){
-
-    static int array[3];
-
-        switch (num) {
-        case T_ASS:
-        case ROUBO:
-        case FURTO:
-
-            array[0] = 1; array[1] = 0; array[2] = 0;
-
+            strcpy(ocorrencia->tipo, "TIPO DE OCORRENCIA DESCONHECIDO!");
+            ocorrencia->prioridade = 0; // Prioridade mínima ou para investigação
+            ocorrencia -> servico[0] = true; // Polícia para verificar
             break;
-        case FOGO1:
-        case FOGO2:
-        case RESGATO:
+        }
 
-            array[0] = 0; array[1] = 1; array[2] = 0;
+        gera_id_ocorrencia(num, ocorrencia);
 
-            break;
-        case ACI_CAR:
-        case ACI_DOM1:
-        case ACI_DOM2:
+        //Pegar um morador de forma aleatória
+        ocorrencia -> morador = cria_morador(ha);
 
-            array[0] = 0; array[1] = 1; array[2] = 1;
+        //Agora, iremos adicionar um bairro aleatório para a ocorrência
+        int id_bairro = 1000 + (1 + rand() % 9);
+        ocorrencia -> bairro = bairro_busca_hash_sem_colisao(ha, id_bairro);
 
-            break;
-        case INFARTO:
+        if (ocorrencia -> bairro == NULL){
+            printf("AVISO: Não foi possível atribuir um bairro à ocorrência");
+        }
 
-            array[0] = 0; array[1] = 0; array[2] = 1;
+        //Colocando a ocorrencia no histórico de ocorrencias do morador
+        if (ocorrencia -> morador != NULL) {
 
-            break;
-        default:
+            if (ocorrencia -> morador -> num_ocorrencias < 50) {
+                int indice = ocorrencia -> morador -> num_ocorrencias;
 
-            array[0] = 0; array[1] = 1; array[2] = 0;
+                ocorrencia -> morador-> ocorrencias[indice] = ocorrencia;
+                ocorrencia -> morador -> num_ocorrencias++;
 
-            break;
-    }
+            } else {
+                printf("AVISO: O morador %s atingiu o limite de ocorrencias (50).\n", ocorrencia -> morador -> nome);
+            }
 
-    return array;
+        } else {
+            printf("ERRO: Nao foi possivel atribuir a ocorrencia a um morador valido.\n");
+        }
 
-}
-
-int gera_id_morador(){
-
-    srand(time(NULL));
-    return 100 + (rand() % (1000 - 100 + 1));
-
-}
-
-char* seleciona_nome_morador(int num){
-
-    char* name = (char*) malloc(sizeof(NOME));
-
-    if(name == NULL){
-
-        printf("ERRO DE ALOCACAO DE MEMORIA!");
-        return 0;
-
-    }
-
-    if(num <= 5){
-
-        name = "João Silva Santos";
-
-    }else if(num >= 6 && num <= 10){
-
-        name = "Pedro Oliveira Costa";
-
-    }else if(num >= 11 && num <= 15){
-
-        name = "Lucas Pereira Almeida";
-
-    }else if(num >= 16 && num <= 20){
-
-        name = "Gabriel Souza Rodrigues";
-
-    }else if(num >= 21 && num <= 25){
-
-        name = "Rafael Fernandes Lima";
-
-    }else if(num >= 26 && num <= 30){
-
-        name = "Carlos Mendes Carvalho";
-
-    }else if(num >= 31 && num <= 35){
-
-        name = "Daniel Barbosa Martins";
-
-    }else if(num >= 36 && num <= 40){
-
-        name = "André Rocha Nunes";
-
-    }else if(num >= 41 && num <= 45){
-
-        name = "Marcelo Castro Ribeiro";
-
-    }else if(num >= 46 && num <= 50){
-
-        name = "Felipe Gomes Duarte";
-
-    }else if(num >= 51 && num <= 55){
-
-        name = "Maria Ferreira Alves";
-
-    }else if(num >= 56 && num <= 60){
-
-        name = "Ana Santos Monteiro";
-
-    }else if(num >= 61 && num <= 65){
-
-        name = "Sofia Lima Xavier";
-
-    }else if(num >= 66 && num <= 70){
-
-        name = "Laura Cunha Neves";
-
-    }else if(num >= 71 && num <= 75){
-
-        name = "Beatriz Cardoso Dias";
-
-    }else if(num >= 76 && num <= 80){
-
-        name = "Camila Teixeira Moreira";
-
-    }else if(num >= 81 && num <= 85){
-
-        name = "Juliana Andrade Pinto";
-
-    }else if(num >= 86 && num <= 90){
-
-        name = "Isabel Moraes Peixoto";
-
-    }else if(num >= 91 && num <= 95){
-
-        name = "Carolina Azevedo Guimarães";
-
-    }else if(num >= 96 && num <= 100){
-
-        name = "Amanda Correia Viana";
-
-    }
-
-    return name;
-
-}
-
-Morador* cria_morador(int region){
-
-    Morador* residente = (Morador*) malloc(sizeof(Morador));
-    if(residente == NULL){
-
-        printf("ERRO AO ALOCAR MEMÓRIA!");
-
-        return 0;
-
-    }
-    srand(time(NULL));
-    residente->id = 100 + ((rand() % (1000 - 100 + 1)) * 10) + region;
-    residente->nome[NOME] = seleciona_nome_morador(residente->id / 100);
-    return residente;
-
-}
-
-Ocorrencia* cria_ocorrencia(){
-
-    Ocorrencia* novo = (Ocorrencia*) malloc(sizeof(Ocorrencia));
-    if(novo == NULL){
-
-        printf("ERRO AO ALOCAR MEMÓRIA!");
-
-        return 0;
-
-    }
-
-    srand(time(NULL));
-    novo->id = 1000 + (rand() % (10000 - 1000 + 1));
-    novo->tipo = seleciona_tipo_ocorrencia(novo->id / 1000);
-    novo->servico[3] = indica_servico(novo->id / 1000);
-    novo->vitima = cria_morador(novo->id % 10);
-    return novo;
-
+        return ocorrencia;
 }

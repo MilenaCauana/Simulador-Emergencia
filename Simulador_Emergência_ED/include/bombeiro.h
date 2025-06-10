@@ -2,8 +2,19 @@
 #define BOMBEIRO_H_INCLUDED
 
 //---------- DEFININDO ESTRUTURAS --------
-typedef struct bombeiro Bombeiro;
-typedef struct bombeiro_hash Bombeiro_Hash;
+typedef struct bombeiro{
+
+    //char nome[40]; Ainda não definimos se terá nome
+    int id;
+    int caminhoes; //Total de caminhoes no bombeiro
+    int caminhoes_disp; //Quantidade de caminhoes disponíveis no momento para atendimento
+    bool disponivel; //Se não houver ambulancia disponível, então o bombeiro X nao esta disponível
+}Bombeiro;
+
+typedef struct bombeiro_hash{
+    int qtd, tamanho; //qtd -> diz respeito à quantidade de elementos já armazenados, e tamanho ao tamanho da tabela hash
+    Bombeiro **itens;
+}Bombeiro_Hash;
 
 //------ ºº FUNÇÕES DE IMPLEMENTAÇÂO DO HASHING ºº ------
 

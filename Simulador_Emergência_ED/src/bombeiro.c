@@ -7,21 +7,6 @@
 //Definindo o tamanho da tabela hash
 #define TAMANHO 7
 
-//---------- DEFININDO ESTRUTURAS --------
-struct bombeiro{
-
-    //char nome[40]; Ainda não definimos se terá nome
-    int id;
-    int caminhoes; //Total de caminhoes no bombeiro
-    int caminhoes_disp; //Quantidade de caminhoes disponíveis no momento para atendimento
-    bool disponivel; //Se não houver ambulancia disponível, então o bombeiro X nao esta disponível
-};
-
-struct bombeiro_hash{
-    int qtd, tamanho; //qtd -> diz respeito à quantidade de elementos já armazenados, e tamanho ao tamanho da tabela hash
-    Bombeiro **itens;
-};
-
 //------ ºº FUNÇÕES DE IMPLEMENTAÇÂO DO HASHING ºº ------
 
 //---FUNÇÕES PRIVADAS---

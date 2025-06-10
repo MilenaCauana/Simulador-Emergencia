@@ -1,22 +1,34 @@
 #ifndef OCORRENCIA_H_INCLUDED
 #define OCORRENCIA_H_INCLUDED
 
-typedef struct pessoa Morador;
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include <string.h>
 
-typedef struct emergencias Ocorrencia;
+#include "../include/ocorrencias.h"
+#include "../include/morador.h"
+#include "../include/bairro.h"
 
-int gera_id_ocorrencia();
+// Forward declaration para Morador, pois Ocorrencia tem um Morador*
+typedef struct morador Morador;
 
-char seleciona_tipo_ocorrencia(int num);
+#define MAX 40
 
-int indica_servico(int num, int array[]);
+//---------- DEFININDO ESTRUTURAS E TIPOS ENUMERADOS --------
+typedef struct ocorrencia{
+    int id;
+    char tipo[MAX];
+    Bairros *bairro;
+    bool servico[3]; //INDICES: 0 -> Policia; 1 -> Bombeiro; 2 -> Hospital.
+    Morador *morador;
+    int prioridade; //Será uma escala de 1 - 5, no qual 1 é o menos prioritário
+    time_t tempo_registro; // Tempo em que a ocorrência foi registrada
+    time_t tempo_atendimento; // Tempo em que a ocorrência foi atendida/despachada
+}Ocorrencia;
 
-int gera_id_morador();
-
-char seleciona_nome_morador(int num);
-
-Morador* cria_morador(int region);
-
-Ocorrencia* cria_ocorrencia();
+//------ ºº FUNÇÕES ºº ------
+void gera_id_ocorrencia(int num, Ocorrencia *ocorrencia);
+Ocorrencia* cria_ocorrencia(Bairros_Hash* ha);
 
 #endif // OCORRENCIA_H_INCLUDED

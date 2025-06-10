@@ -7,19 +7,6 @@
 #define TAMANHO 7
 
 //---------- DEFININDO ESTRUTURAS --------
-struct policia{
-
-    //char nome[40]; Ainda não definimos se terá nome
-    int id;
-    int viaturas; //Total de viaturas na policia
-    int viaturas_disp; //Quantidade de viaturas disponíveis no momento para atendimento
-    bool disponivel; //Se não houver viatura disponível, então a policia X nao esta disponível
-};
-
-struct policia_hash{
-    int qtd, tamanho; //qtd -> diz respeito à quantidade de elementos já armazenados, e tamanho ao tamanho da tabela hash
-    Policia **itens;
-};
 
 //------ ºº FUNÇÕES DE IMPLEMENTAÇÂO DO HASHING ºº ------
 

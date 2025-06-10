@@ -35,21 +35,34 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="include/bairro.h" />
+		<Unit filename="include/bombeiro.h" />
 		<Unit filename="include/fila_de_ocorrencias.h" />
-		<Unit filename="include/ocorrencia.h" />
-		<Unit filename="main.c">
+		<Unit filename="include/hospital.h" />
+		<Unit filename="include/morador.h" />
+		<Unit filename="include/ocorrencias.h" />
+		<Unit filename="include/policia.h" />
+		<Unit filename="src/bairro.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="src/bairro.c">
+		<Unit filename="src/bombeiro.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="src/fila_de_ocorrencias.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="src/hospital.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="src/main.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="src/morador.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="src/ocorrencias.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/policia.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Extensions>
