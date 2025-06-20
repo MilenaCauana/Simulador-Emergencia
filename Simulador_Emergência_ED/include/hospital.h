@@ -1,20 +1,25 @@
 #ifndef HOSPITAL_H_INCLUDED
 #define HOSPITAL_H_INCLUDED
 
+#include <stdbool.h> // Para usar bool
+
 //---------- DEFININDO ESTRUTURAS --------
 typedef struct hospital{
-
     //char nome[40]; Ainda não definimos se terá nome
-    int id;
+    int id; // O ID pode ser relacionado ao bairro (e.g., ID Bairro + Sufixo)
     int ambulancias; //Total de ambulancias no hospital
     int ambulancias_disp; //Quantidade de ambulancias disponíveis no momento para atendimento
-    bool disponivel; //Se não houver ambulancia disponível, então o hospital X nao esta disponível
+    //bool disponivel; //Se não houver ambulancia disponível, então o hospital X nao esta disponível (controlado por ambulancias_disp)
 }Hospital;
 
 typedef struct hospital_hash{
     int qtd, tamanho; //qtd -> diz respeito à quantidade de elementos já armazenados, e tamanho ao tamanho da tabela hash
     Hospital **itens;
 }Hospital_Hash;
+
+//---Função privada de hashing para evitar repetição no .h ---
+int hospital_chave_divisao(int chave, int tamanho);
+
 
 //------ ºº FUNÇÕES DE IMPLEMENTAÇÂO DO HASHING ºº ------
 

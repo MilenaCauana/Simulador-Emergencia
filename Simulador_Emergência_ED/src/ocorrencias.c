@@ -9,7 +9,7 @@
 
 #define MAX 40
 
-//--> enum privado!
+//--- ºº ENUM PRIVADO ºº ---
 typedef enum tipo_de_ocorrencia{
     T_ASS = 0,
     ROUBO,
@@ -37,32 +37,28 @@ typedef enum tipo_de_ocorrencia{
 
 /*
 *---Função Geradora de IDs--
-* Recebe: sem parâmetros
-* Retorna: inteiro
+* Recebe: dois inteiros (num base para o ID e um ponteiro para a ocorrencia)
+* Retorna: void
 *
 */
 void gera_id_ocorrencia(int num, Ocorrencia *ocorrencia){
-
      int complemento = rand() % 1000; // Gera um ID único de 0 a 999
-
-     ocorrencia -> id = (num * 1000) + complemento;
-
+     ocorrencia -> id = (num * 1000) + complemento; // ID baseado no tipo + complemento
 }
 
 /*
 *---Função cria ocorrencia--
-* Recebe: nada
+* Recebe: Ponteiro para o hash de bairros e para o hash de moradores
 * Retorna: Ocorrencia criada
 *
 * - Nessa função, o tipo da ocorrência, sua prioridade e quais serviços serão necessarios já serão preenchidos
 *
 */
-Ocorrencia* cria_ocorrencia(Bairros_Hash* ha){
+Ocorrencia* cria_ocorrencia(Bairros_Hash* ha, Morador_Hash *hash_morador){
+    Ocorrencia* ocorrencia = (Ocorrencia*) malloc(sizeof(Ocorrencia));
 
-     Ocorrencia* ocorrencia = (Ocorrencia*) malloc(sizeof(Ocorrencia));
-
-     if(ocorrencia == NULL){
-        printf("ERRO AO ALOCAR MEMORIA!");
+    if(ocorrencia == NULL){
+        printf("ERRO AO ALOCAR MEMORIA PARA OCORRENCIA!");
         return NULL;
     }
 
@@ -71,16 +67,15 @@ Ocorrencia* cria_ocorrencia(Bairros_Hash* ha){
     ocorrencia->servico[1] = false; // Bombeiro
     ocorrencia->servico[2] = false; // Hospital
 
-    //pegando o tempo de registro
-    ocorrencia->tempo_registro = time(NULL);
+    // tempo_registro e tempo_atendimento serão preenchidos em main.c com base no ciclo
+    ocorrencia->tempo_registro = 0;
     ocorrencia->tempo_atendimento = 0; // Inicialmente não atendida
 
     //Pegando um numero aleatório para selecionar o tipo da ocorrência
     int num = rand() % NUM_TIPOS_OCORRENCIA;
 
     switch (num){
-
-       case T_ASS:
+        case T_ASS:
             strcpy(ocorrencia->tipo, "TENTATIVA DE HOMICIDIO!");
             ocorrencia->prioridade = 5;
             ocorrencia->servico[0] = true; // Polícia
@@ -189,7 +184,7 @@ Ocorrencia* cria_ocorrencia(Bairros_Hash* ha){
             break;
 
         case AFOGAMENTO:
-            strcpy(ocorrencia->tipo, "OCORRRECIA DE AFOGAMENTO!");
+            strcpy(ocorrencia->tipo, "OCORRENCIA DE AFOGAMENTO!");
             ocorrencia->prioridade = 5;
             ocorrencia->servico[1] = true; // Bombeiro (Resgate aquático)
             ocorrencia->servico[2] = true; // Hospital (Atendimento médico)
@@ -218,32 +213,99 @@ Ocorrencia* cria_ocorrencia(Bairros_Hash* ha){
         gera_id_ocorrencia(num, ocorrencia);
 
         //Pegar um morador de forma aleatória
-        ocorrencia -> morador = cria_morador(ha);
+        ocorrencia -> morador = morador_aleatorio(hash_morador);
 
         //Agora, iremos adicionar um bairro aleatório para a ocorrência
-        int id_bairro = 1000 + (1 + rand() % 9);
-        ocorrencia -> bairro = bairro_busca_hash_sem_colisao(ha, id_bairro);
+        int id_bairro_aleatorio = 1000 + (1 + rand() % 9); // Gera IDs de bairro de 1001 a 1009
+        ocorrencia -> bairro = bairro_busca_hash_sem_colisao(ha, id_bairro_aleatorio);
 
         if (ocorrencia -> bairro == NULL){
-            printf("AVISO: Não foi possível atribuir um bairro à ocorrência");
+            printf("AVISO: Nao foi possivel atribuir um bairro a ocorrencia (ID %d). Isso pode indicar um erro no preenche_bairros ou ID invalido.\n", id_bairro_aleatorio);
         }
 
         //Colocando a ocorrencia no histórico de ocorrencias do morador
         if (ocorrencia -> morador != NULL) {
-
             if (ocorrencia -> morador -> num_ocorrencias < 50) {
                 int indice = ocorrencia -> morador -> num_ocorrencias;
 
-                ocorrencia -> morador-> ocorrencias[indice] = ocorrencia;
-                ocorrencia -> morador -> num_ocorrencias++;
+                // Aloca memória para a cópia da Ocorrencia para o histórico do morador
+                Ocorrencia *copia_ocorrencia = (Ocorrencia*) malloc(sizeof(Ocorrencia));
+                if (copia_ocorrencia == NULL) {
+                    printf("ERRO AO ALOCAR MEMORIA PARA COPIA DE OCORRENCIA NO MORADOR!\n");
+                    // Se não conseguir alocar a cópia, ainda assim prossegue com a ocorrência original, mas sem registrar no morador.
+                } else {
+                    // Copia os dados da ocorrência para a nova memória alocada
+                    memcpy(copia_ocorrencia, ocorrencia, sizeof(Ocorrencia));
+                    // IMPORTANTE: O ponteiro 'bairro' dentro da cópia deve apontar para o mesmo bairro na hash principal,
+                    // pois o bairro em si não é duplicado, apenas a estrutura da Ocorrencia.
+                    // O mesmo vale para 'morador', a cópia deve apontar para o morador original.
+                    copia_ocorrencia->bairro = ocorrencia->bairro;
+                    copia_ocorrencia->morador = ocorrencia->morador; // A cópia aponta para o morador original
+
+                    ocorrencia->morador->ocorrencias[indice] = copia_ocorrencia;
+                    ocorrencia->morador->num_ocorrencias++;
+                }
 
             } else {
-                printf("AVISO: O morador %s atingiu o limite de ocorrencias (50).\n", ocorrencia -> morador -> nome);
+                printf("AVISO: O morador %s atingiu o limite de ocorrencias (50). Nao foi possivel adicionar a ocorrencia ao historico.\n", ocorrencia -> morador -> nome);
             }
-
         } else {
-            printf("ERRO: Nao foi possivel atribuir a ocorrencia a um morador valido.\n");
+            printf("ERRO: Nao foi possivel atribuir a ocorrencia a um morador valido. Ocorrencia criada sem morador associado.\n");
         }
 
         return ocorrencia;
+}
+
+/*
+*---Função que exibe ocorrência específica--
+* Recebe: Ponteiro para ocorrência específica
+* Retorna: void
+*
+*/
+void exibir_ocorrencia_especifica(Ocorrencia *ocorrencia){
+    if (ocorrencia == NULL) {
+        printf("Erro: Ocorrencia nao existe.\n");
+        return;
+    }
+
+    printf("ID: %d\n", ocorrencia -> id);
+    printf("Tipo: %s\n", ocorrencia -> tipo);
+
+    if (ocorrencia->bairro != NULL) {
+        printf("Bairro: %s (ID: %d)\n", ocorrencia->bairro->nome, ocorrencia->bairro->id);
+    } else {
+        printf("Bairro: Nao Atribuido\n");
+    }
+
+    if (ocorrencia->morador != NULL) {
+        printf("Morador: %s (CPF: %lld)\n", ocorrencia->morador->nome, ocorrencia->morador->cpf);
+    } else {
+        printf("Morador: Nao Atribuido\n");
+    }
+
+
+    printf("--- Servicos Necessitados ---\n");
+        if (ocorrencia -> servico[0]){
+            printf("- Policia\n");
+        }
+
+        if (ocorrencia -> servico[1]){
+            printf("- Bombeiro\n");
+        }
+
+        if (ocorrencia -> servico[2]){
+            printf("- Hospital\n");
+        }
+
+    printf("Prioridade: %d\n", ocorrencia -> prioridade);
+    // Tempos em ciclos (que representam 10 minutos)
+    printf("Tempo de Registro (ciclo): %lld (Hora Aprox.: %02lld:%02lld)\n",
+           (long long)ocorrencia->tempo_registro,
+           ((long long)ocorrencia->tempo_registro - 1) * 10 / 60,
+           ((long long)ocorrencia->tempo_registro - 1) * 10 % 60);
+    printf("Tempo de Atendimento (ciclo): %lld (Hora Aprox.: %02lld:%02lld)\n",
+           (long long)ocorrencia->tempo_atendimento,
+           ((long long)ocorrencia->tempo_atendimento - 1) * 10 / 60,
+           ((long long)ocorrencia->tempo_atendimento - 1) * 10 % 60);
+    printf("--------------------------\n");
 }

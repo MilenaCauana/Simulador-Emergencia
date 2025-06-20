@@ -10,10 +10,8 @@ typedef struct bairros_da_cidade {
 } Bairros;
 
 typedef struct bairros_hash{
-
     int qtd, tamanho;//qtd -> diz respeito à quantidade de elementos já armazenados, e tamanho ao tamanho da tabela hash
     Bairros **itens;
-
 }Bairros_Hash;
 
 
@@ -27,12 +25,13 @@ int bairro_insere_hash_sem_colisao(Bairros_Hash *ha, Bairros bairro);
 
 Bairros* bairro_busca_hash_sem_colisao(Bairros_Hash *ha, int id);
 
-void bairros_exibir(Bairros_Hash *ha);
-
-void exibir_bairro_especifico(Bairros *bairro);
-
 void limpa_hash_bairros(Bairros_Hash *ha);
 
 Bairros_Hash* preenche_bairros();
+
+//------ ºº FUNÇÕES DE EXIBIR BAIRROS ºº ------
+void bairros_exibir(Bairros_Hash *ha);
+
+void exibir_bairro_especifico(Bairros *bairro);
 
 #endif // BAIRRO_H_INCLUDED

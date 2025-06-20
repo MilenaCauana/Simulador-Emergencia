@@ -2,13 +2,35 @@
 #ifndef FILA_DE_OCORRENCIAS_H_INCLUDED
 #define FILA_DE_OCORRENCIAS_H_INCLUDED
 
+#include <stdbool.h> // Para usar o tipo bool
 #include "ocorrencias.h" // Inclui a definição de Ocorrencia
 #include "policia.h"
 #include "bombeiro.h"
 #include "hospital.h"
 #include "bairro.h"
+#include "morador.h" // Inclui a definição de Morador_Hash
 
 //---------- DEFININDO ESTRUTURAS --------
+
+/*
+*---Estrutura de um nó da pilha para o relatório--
+* Contém um ponteiro para uma Ocorrencia e um ponteiro para o próximo nó.
+*
+*/
+typedef struct NoPilha {
+    Ocorrencia *ocorrencia; // ponteiro para a ocorrência
+    struct NoPilha *prox;
+} NoPilha;
+
+/*
+*---Estrutura do descritor da pilha de relatório--
+* Contém ponteiros para o topo da pilha e o tamanho atual.
+*
+*/
+typedef struct PilhaRelatorio {
+    NoPilha *topo;
+    int tamanho;
+} PilhaRelatorio;
 
 /*
 *---Estrutura de um nó da fila--
@@ -31,9 +53,6 @@ typedef struct descritor_fila {
     int tamanho;
 }Descritor;
 
-// Estrutura para o relatório
-typedef struct relatorio_ocorrencia RelatorioOcorrencia;
-
 //------ ºº PROTÓTIPOS DAS FUNÇÕES ºº ------
 
 /*
@@ -54,11 +73,11 @@ void confere_aloc(void *ptr);
 
 /*
 *---Função para criar um novo nó da fila com uma ocorrência--
-* Recebe: Um ponteiro para a tabela hash de bairros (para criar a ocorrência)
+* Recebe: Um ponteiro para a tabela hash de bairros e de moradores (para criar a ocorrência)
 * Retorna: Um ponteiro para o nó recém-criado
 *
 */
-No* cria_no(Bairros_Hash *ha);
+No* cria_no(Bairros_Hash *ha, Morador_Hash *hash_morador);
 
 /*
 *---Função para adicionar uma ocorrência na fila de prioridade--
@@ -79,6 +98,7 @@ Ocorrencia* remove_da_fila(Descritor *D);
 
 /*
 *---Função para exibir as informações de uma ocorrência--
+* (Esta função agora chama exibir_ocorrencia_especifica de ocorrencias.c)
 * Recebe: Um ponteiro para a ocorrência
 * Retorna: void
 *
@@ -119,11 +139,11 @@ int gera_qtd_no();
 
 /*
 *---Função para simular o enfileiramento de ocorrências--
-* Recebe: Um ponteiro para o descritor da fila e a tabela hash de bairros
+* Recebe: Um ponteiro para o descritor da fila, a tabela hash de bairros e de moradores
 * Retorna: void
 *
 */
-void enfileirando(Descritor *D, Bairros_Hash *ha);
+void enfileirando(Descritor *D, Bairros_Hash *ha, Morador_Hash *hash_morador);
 
 /*
 *---Função para buscar e despachar uma unidade de polícia--
@@ -149,7 +169,6 @@ bool despacha_bombeiro(Bombeiro_Hash *bombeiro_ha, int id_bairro_ocorrencia);
 */
 bool despacha_hospital(Hospital_Hash *hospital_ha, int id_bairro_ocorrencia);
 
-
 /*
 *---Função para simular o despacho de serviços--
 * Recebe: A ocorrência a ser despachada e as tabelas hash das unidades de serviço
@@ -158,30 +177,45 @@ bool despacha_hospital(Hospital_Hash *hospital_ha, int id_bairro_ocorrencia);
 */
 void despacha_servicos(Ocorrencia *ocorrencia, Policia_Hash *policia_ha, Bombeiro_Hash *bombeiro_ha, Hospital_Hash *hospital_ha);
 
-
 /*
-*---Função para adicionar uma ocorrência atendida ao relatório--
-* Recebe: Um ponteiro para a ocorrência atendida e o ponteiro para o início da lista de relatório
-* Retorna: O novo início da lista (pode ser o mesmo ou o novo nó)
+*---Função para inicializar a pilha de ocorrências --
+* Recebe: void
+* Retorna: Um ponteiro para o descritor da pilha de relatório
 *
 */
-RelatorioOcorrencia* adiciona_ao_relatorio(Ocorrencia *ocorr_atendida, RelatorioOcorrencia *lista_relatorio);
+PilhaRelatorio* cria_pilha_relatorio();
 
 /*
-*---Função para imprimir o relatório final da simulação--
-* Recebe: O ponteiro para o início da lista de relatório
+*---Função para adicionar uma ocorrência atendida ao relatório (pilha)--
+* Recebe: Um ponteiro para o descritor da pilha de relatório e um ponteiro para a ocorrência atendida
 * Retorna: void
 *
 */
-void imprime_relatorio(RelatorioOcorrencia *lista_relatorio);
+void push_pilha_relatorio(PilhaRelatorio *pilha, Ocorrencia *ocorrencia);
 
 /*
-*---Função para liberar a memória alocada para o relatório--
-* Recebe: O ponteiro para o início da lista de relatório
+*---Função para remover uma ocorrência do topo da pilha de relatório--
+* Recebe: Um ponteiro para o descritor da pilha de relatório
+* Retorna: Um ponteiro para a ocorrência removida, ou NULL se a pilha estiver vazia
+*
+*/
+Ocorrencia* pop_pilha_relatorio(PilhaRelatorio *pilha);
+
+/*
+*---Função para imprimir o relatório final da simulação (pilha)--
+* Recebe: O ponteiro para o descritor da pilha de relatório
 * Retorna: void
 *
 */
-void free_relatorio(RelatorioOcorrencia *lista_relatorio);
+void imprime_pilha_relatorio(PilhaRelatorio *pilha);
 
+/*
+*---Função para liberar a memória alocada para o relatório (pilha)--
+* Recebe: O ponteiro para o descritor da pilha de relatório
+* Retorna: void
+*
+*/
+void free_pilha_relatorio(PilhaRelatorio *pilha);
+void free_ocorrencia(Ocorrencia *ocorr);
 
 #endif // FILA_DE_OCORRENCIAS_H_INCLUDED

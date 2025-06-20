@@ -1,8 +1,9 @@
-
 #include <stdio.h>
 #include <stdlib.h>
-#include<stdbool.h>
+#include <stdbool.h>
+#include <string.h>
 #include "../include/bombeiro.h"
+#include "../include/bairro.h"
 
 //Definindo o tamanho da tabela hash
 #define TAMANHO 7
@@ -46,12 +47,9 @@ Bombeiro_Hash *cria_hash_bombeiro(int tamanho){
         ha -> qtd = 0;
 
         for(int i = 0; i < ha -> tamanho; i++){
-
             ha -> itens[i] = NULL;
-
         }
     }
-
     return ha;
 }
 
@@ -62,16 +60,13 @@ Bombeiro_Hash *cria_hash_bombeiro(int tamanho){
 *
 */
 void bombeiro_libera_hash(Bombeiro_Hash *ha){
-
-     if (ha != NULL){
+    if (ha != NULL){
         int i;
-
         for (i = 0; i < ha -> tamanho; i++){
             if (ha -> itens[i] != NULL){
                 free (ha -> itens[i]);
             }
         }
-
         free(ha -> itens);
         free (ha);
     }
@@ -80,18 +75,29 @@ void bombeiro_libera_hash(Bombeiro_Hash *ha){
 
 /*
 *---Função de inserção da tabela--
-* Recebe: um ponteiro para a tabela hash e a bombeiro que será inserida
+* Recebe: um ponteiro para a tabela hash e o bombeiro que será inserido
 * Retorna: inteiro booleano para definir se deu certo a inserção
 *
 */
 int bombeiro_insere_hash_sem_colisao(Bombeiro_Hash *ha, Bombeiro bombeiro){
-
     if(ha == NULL || ha -> qtd == ha -> tamanho){
         return 0;
     }
 
     int chave = bombeiro.id;
     int pos = bombeiro_chave_divisao(chave, ha -> tamanho);
+
+    // Tentativa de tratamento de colisão simples (linear probing)
+    int inicio_pos = pos;
+    while (ha->itens[pos] != NULL) {
+        if (ha->itens[pos]->id == bombeiro.id) {
+            return 0;
+        }
+        pos = (pos + 1) % ha->tamanho;
+        if (pos == inicio_pos) {
+            return 0;
+        }
+    }
 
     Bombeiro *novo;
     novo = (Bombeiro *) malloc(sizeof(Bombeiro));
@@ -109,26 +115,30 @@ int bombeiro_insere_hash_sem_colisao(Bombeiro_Hash *ha, Bombeiro bombeiro){
 
 /*
 *---Função de busca da tabela--
-* Recebe: um ponteiro para a tabela hash,  e a bombeiro que será buscada
-* Retorna: inteiro booleano para definir se deu certo a busca
-*
-* Para receber o aluno, mandar como parâmetro um ponteiro do tipo poliicia, o qual será atribuido as informações
+* Recebe: um ponteiro para a tabela hash,  e o bombeiro que será buscado
+* Retorna: inteiro booleano para definir se deu certo a busca, preenchendo o ponteiro 'bombeiro'
 *
 */
 int bombeiro_busca_hash_sem_colisao(Bombeiro_Hash* ha, int id, Bombeiro *bombeiro){
-
    if (ha == NULL){
     return 0;
    }
 
    int pos = bombeiro_chave_divisao(id, ha -> tamanho);
+   int inicio_pos = pos;
 
-   if (ha -> itens[pos] == NULL){
-    return 0;
+   // Lógica de busca que reflete o linear probing da inserção
+   while (ha->itens[pos] != NULL) {
+       if (ha->itens[pos]->id == id) {
+           *bombeiro = *(ha -> itens[pos]); // Copia os dados encontrados
+           return 1; // Encontrado
+       }
+       pos = (pos + 1) % ha->tamanho;
+       if (pos == inicio_pos) { // Loop completo, não encontrado
+           return 0;
+       }
    }
-
-   *bombeiro = *(ha -> itens[pos]);
-   return 1;
+   return 0;
 }
 
 /*
@@ -136,55 +146,78 @@ int bombeiro_busca_hash_sem_colisao(Bombeiro_Hash* ha, int id, Bombeiro *bombeir
 * Recebe: um ponteiro para a tabela hash
 * Retorna: void
 *
-*  "Esvaziar" a tabela hash sem destruí-la completamente.
-*
 */
 void limpa_hash_bombeiro(Bombeiro_Hash *ha){
-
     if(ha == NULL){
-
         return;
-
     }
 
     for(int i = 0; i < ha -> tamanho; i++){
-
         if(ha -> itens[i] != NULL){
-
             free(ha -> itens[i]);
             ha -> itens[i] = NULL;
-
         }
-
     }
-
     ha -> qtd = 0;
-
 }
 
 /*
-*---Função que preenche as informações do bairro--
+*---Função que preenche as informações do bombeiro--
 * Recebe:
 * Retorna: Ponteiro para a tabela
 *
 */
 Bombeiro_Hash* preenche_bombeiro(){
-
     Bombeiro_Hash *ha = cria_hash_bombeiro(TAMANHO);
+    if (ha == NULL) return NULL;
+
+    // IDs de bombeiro mapeados para bairros:
+    // Bombeiro 100193 -> Bairro 1001
+    // Bombeiro 100293 -> Bairro 1002
+    // ...
+    // Bombeiro 100793 -> Bairro 1007
 
     Bombeiro bombeiro1;
-    bombeiro1.id = 100993;
-    bombeiro1.caminhoes = 4;
-    bombeiro1.caminhoes_disp= 4;
-    bombeiro1.disponivel = true;
+    bombeiro1.id = 100193;
+    bombeiro1.caminhoes = 2;
+    bombeiro1.caminhoes_disp = 2;
     bombeiro_insere_hash_sem_colisao(ha, bombeiro1);
 
     Bombeiro bombeiro2;
-    bombeiro2.id = 100793;
-    bombeiro2.caminhoes = 5;
-    bombeiro2.caminhoes_disp = 5;
-    bombeiro2.disponivel = true;
+    bombeiro2.id = 100293;
+    bombeiro2.caminhoes = 1;
+    bombeiro2.caminhoes_disp = 1;
     bombeiro_insere_hash_sem_colisao(ha, bombeiro2);
+
+    Bombeiro bombeiro3;
+    bombeiro3.id = 100393;
+    bombeiro3.caminhoes = 3;
+    bombeiro3.caminhoes_disp = 3;
+    bombeiro_insere_hash_sem_colisao(ha, bombeiro3);
+
+    Bombeiro bombeiro4;
+    bombeiro4.id = 100493;
+    bombeiro4.caminhoes = 2;
+    bombeiro4.caminhoes_disp = 2;
+    bombeiro_insere_hash_sem_colisao(ha, bombeiro4);
+
+    Bombeiro bombeiro5;
+    bombeiro5.id = 100593;
+    bombeiro5.caminhoes = 2;
+    bombeiro5.caminhoes_disp = 2;
+    bombeiro_insere_hash_sem_colisao(ha, bombeiro5);
+
+    Bombeiro bombeiro6;
+    bombeiro6.id = 100693;
+    bombeiro6.caminhoes = 1;
+    bombeiro6.caminhoes_disp = 1;
+    bombeiro_insere_hash_sem_colisao(ha, bombeiro6);
+
+    Bombeiro bombeiro7;
+    bombeiro7.id = 100793;
+    bombeiro7.caminhoes = 2;
+    bombeiro7.caminhoes_disp = 2;
+    bombeiro_insere_hash_sem_colisao(ha, bombeiro7);
 
     return ha;
 }
