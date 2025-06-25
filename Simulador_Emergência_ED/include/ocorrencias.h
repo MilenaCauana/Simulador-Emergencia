@@ -28,7 +28,7 @@ typedef struct ocorrencia{
 }Ocorrencia;
 
 //------ ºº FUNÇÕES ºº ------
-void gera_id_ocorrencia(int num, Ocorrencia *ocorrencia);
+void gera_id_ocorrencia(Ocorrencia *ocorrencia);
 // Adicionado hash_morador para que a ocorrencia possa escolher um morador
 Ocorrencia* cria_ocorrencia(Bairros_Hash* ha, Morador_Hash *hash_morador);
 

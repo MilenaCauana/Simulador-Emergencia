@@ -170,3 +170,139 @@
 
 1750434842 c:\users\milena\documents\aprendendo-github\simulador-emergencia\simulador_emergência_ed\include\morador.h
 
+1750552702 source:c:\users\igor pereira marani\onedrive\Área de trabalho\programas - meus\github\simulador-emergencia\simulador-emergencia\simulador_emergência_ed\src\bairro.c
+	<stdio.h>
+	<stdlib.h>
+	"../include/bairro.h"
+
+1750552702 c:\users\igor pereira marani\onedrive\Área de trabalho\programas - meus\github\simulador-emergencia\simulador-emergencia\simulador_emergência_ed\include\bairro.h
+
+1750552702 source:c:\users\igor pereira marani\onedrive\Área de trabalho\programas - meus\github\simulador-emergencia\simulador-emergencia\simulador_emergência_ed\src\bombeiro.c
+	<stdio.h>
+	<stdlib.h>
+	<stdbool.h>
+	<string.h>
+	"../include/bombeiro.h"
+	"../include/bairro.h"
+
+1750552702 c:\users\igor pereira marani\onedrive\Área de trabalho\programas - meus\github\simulador-emergencia\simulador-emergencia\simulador_emergência_ed\include\bombeiro.h
+	<stdbool.h>
+
+1750788756 source:c:\users\igor pereira marani\onedrive\Área de trabalho\programas - meus\github\simulador-emergencia\simulador-emergencia\simulador_emergência_ed\src\fila_de_ocorrencias.c
+	<stdio.h>
+	<stdlib.h>
+	<stdbool.h>
+	<time.h>
+	<string.h>
+	"../include/fila_de_ocorrencias.h"
+	"../include/ocorrencias.h"
+	"../include/morador.h"
+	"../include/bairro.h"
+	"../include/policia.h"
+	"../include/bombeiro.h"
+	"../include/hospital.h"
+
+1750788984 c:\users\igor pereira marani\onedrive\Área de trabalho\programas - meus\github\simulador-emergencia\simulador-emergencia\simulador_emergência_ed\include\fila_de_ocorrencias.h
+	<stdbool.h>
+	"ocorrencias.h"
+	"policia.h"
+	"bombeiro.h"
+	"hospital.h"
+	"bairro.h"
+	"morador.h"
+	"../include/pilha1.h"
+
+1750556160 c:\users\igor pereira marani\onedrive\Área de trabalho\programas - meus\github\simulador-emergencia\simulador-emergencia\simulador_emergência_ed\include\ocorrencias.h
+	<stdio.h>
+	<stdlib.h>
+	<stdbool.h>
+	<string.h>
+	<time.h>
+
+1750552702 c:\users\igor pereira marani\onedrive\Área de trabalho\programas - meus\github\simulador-emergencia\simulador-emergencia\simulador_emergência_ed\include\policia.h
+	<stdbool.h>
+
+1750552702 c:\users\igor pereira marani\onedrive\Área de trabalho\programas - meus\github\simulador-emergencia\simulador-emergencia\simulador_emergência_ed\include\hospital.h
+	<stdbool.h>
+
+1750552702 c:\users\igor pereira marani\onedrive\Área de trabalho\programas - meus\github\simulador-emergencia\simulador-emergencia\simulador_emergência_ed\include\morador.h
+
+1750552702 source:c:\users\igor pereira marani\onedrive\Área de trabalho\programas - meus\github\simulador-emergencia\simulador-emergencia\simulador_emergência_ed\src\hospital.c
+	<stdio.h>
+	<stdlib.h>
+	<stdbool.h>
+	<string.h>
+	"../include/hospital.h"
+	"../include/bairro.h"
+
+1750823949 source:c:\users\igor pereira marani\onedrive\Área de trabalho\programas - meus\github\simulador-emergencia\simulador-emergencia\simulador_emergência_ed\src\main.c
+	<stdio.h>
+	<stdlib.h>
+	<stdbool.h>
+	<time.h>
+	<string.h>
+	<locale.h>
+	"../include/fila_de_ocorrencias.h"
+	"../include/ocorrencias.h"
+	"../include/morador.h"
+	"../include/bairro.h"
+	"../include/policia.h"
+	"../include/bombeiro.h"
+	"../include/hospital.h"
+	"../include/pilha1.h"
+	"../include/arvore_binaria_busca.h"
+
+1750552702 source:c:\users\igor pereira marani\onedrive\Área de trabalho\programas - meus\github\simulador-emergencia\simulador-emergencia\simulador_emergência_ed\src\morador.c
+	<stdio.h>
+	<stdlib.h>
+	<stdbool.h>
+	<string.h>
+	"../include/morador.h"
+	"../include/bairro.h"
+	"../include/ocorrencias.h"
+
+1750822900 source:c:\users\igor pereira marani\onedrive\Área de trabalho\programas - meus\github\simulador-emergencia\simulador-emergencia\simulador_emergência_ed\src\ocorrencias.c
+	<stdio.h>
+	<stdlib.h>
+	<stdbool.h>
+	<string.h>
+	<time.h>
+	"../include/ocorrencias.h"
+	"../include/morador.h"
+	"../include/bairro.h"
+
+1750552702 source:c:\users\igor pereira marani\onedrive\Área de trabalho\programas - meus\github\simulador-emergencia\simulador-emergencia\simulador_emergência_ed\src\policia.c
+	<stdio.h>
+	<stdlib.h>
+	<stdbool.h>
+	<string.h>
+	"../include/policia.h"
+	"../include/bairro.h"
+
+1750552702 source:c:\users\igor pereira marani\onedrive\Área de trabalho\programas - meus\github\simulador-emergencia\simulador-emergencia\simulador_emergência_ed\structs.c
+	<stdio.h>
+	<stdlib.h>
+	<stdbool.h>
+
+1750864682 source:c:\users\igor pereira marani\onedrive\Área de trabalho\programas - meus\github\simulador-emergencia\simulador-emergencia\simulador_emergência_ed\src\arvore_binaria_busca.c
+	<stdio.h>
+	<stdlib.h>
+	<stdbool.h>
+	"../include/ocorrencias.h"
+	"../include/arvore_binaria_busca.h"
+	"../include/pilha1.h"
+
+1750864192 c:\users\igor pereira marani\onedrive\Área de trabalho\programas - meus\github\simulador-emergencia\simulador-emergencia\simulador_emergência_ed\include\arvore_binaria_busca.h
+	"ocorrencias.h"
+	"pilha1.h"
+
+1750788756 c:\users\igor pereira marani\onedrive\Área de trabalho\programas - meus\github\simulador-emergencia\simulador-emergencia\simulador_emergência_ed\include\pilha.h
+
+1750815770 c:\users\igor pereira marani\onedrive\Área de trabalho\programas - meus\github\simulador-emergencia\simulador-emergencia\simulador_emergência_ed\include\pilha1.h
+	"ocorrencias.h"
+
+1750789072 source:c:\users\igor pereira marani\onedrive\Área de trabalho\programas - meus\github\simulador-emergencia\simulador-emergencia\simulador_emergência_ed\src\pilha.c
+	<stdio.h>
+	<stdlib.h>
+	"../include/pilha1.h"
+

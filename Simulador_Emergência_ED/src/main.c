@@ -12,6 +12,8 @@
 #include "../include/policia.h"
 #include "../include/bombeiro.h"
 #include "../include/hospital.h"
+#include "../include/pilha1.h"
+#include "../include/arvore_binaria_busca.h"
 
 
 int main() {
@@ -46,7 +48,7 @@ int main() {
     printf("Fila de ocorrencias criada!\n");
 
     // Pilha para armazenar ocorrências atendidas para o relatório final
-    PilhaRelatorio *relatorio_final = cria_pilha_relatorio(); // Inicializa a pilha
+    Pilha *relatorio_final = cria_pilha(); // Inicializa a pilha
     if (!relatorio_final) {
         printf("Erro ao criar a pilha de relatorio. Encerrando.\n");
         // Liberar o que já foi alocado antes de sair
@@ -88,7 +90,7 @@ int main() {
                 // A função push_pilha_relatorio apenas empilha o ponteiro da ocorrência,
                 // a ocorrência será liberada no final, após o relatório ser impresso,
                 // ou se for movida para o histórico do morador.
-                push_pilha_relatorio(relatorio_final, ocorrencia_atual);
+                push_pilha(relatorio_final, ocorrencia_atual);
 
                 // IMPORTANTE: Não libera ocorrencia_atual aqui. Ela será liberada
                 // por 'free_ocorrencia' quando for movida para o histórico do morador
@@ -123,10 +125,14 @@ int main() {
         ciclo++;
     }
 
+    ArvB ABB;
+    ABB.raiz = cria_arvore_binaria(relatorio_final);
+    preenche_arvore_binaria(ABB.raiz, relatorio_final);
     printf("\n--- SIMULACAO ENCERRADA ---\n");
 
     // -- MENU --
     int opcao;
+    int id_escolha;
     do {
         printf("\n--- MENU DE CONSULTA POS-SIMULACAO ---\n");
         printf("Escolha uma opcao:\n");
@@ -135,6 +141,7 @@ int main() {
         printf("3. Visualizar Bairros\n");
         printf("4. Buscar bairro por ID\n");
         printf("5. Relatório das Ocorrências Atendidas\n");
+        printf("6. Procura Ocorrência por ID na ABB\n");
         printf("0. Sair\n");
         printf("Opcao: ");
         scanf("%d", &opcao);
@@ -168,7 +175,42 @@ int main() {
                 break;
             case 5:
                 printf("\n--- RELATORIO FINAL DAS OCORRENCIAS ATENDIDAS ---\n");
-                imprime_pilha_relatorio(relatorio_final);
+                imprime_pilha(relatorio_final);
+                break;
+            case 6:
+                printf("\nDigite ID de uma ocorrencia:");
+                scanf("%d", &id);
+                no_abb* procurado = buscaBinaria(ABB.raiz, id);
+                if(procurado == NULL){
+                    printf("\nID inválido!");
+                }else{
+                    printf("ID: %d\n", procurado->problema->id);
+                    printf("Tipo: %s\n", procurado->problema->tipo);
+                    printf("Bairro: %s (ID: %d)\n", procurado->problema->bairro->nome, procurado->problema->bairro->id);
+                    printf("Morador: %s (CPF: %lld)\n", procurado->problema->morador->nome, procurado->problema->morador->cpf);
+                    printf("--- Servicos Necessitados ---\n");
+                    if (procurado->problema->servico[0]){
+                        printf("- Policia\n");
+                    }
+
+                    if (procurado->problema->servico[1]){
+                        printf("- Bombeiro\n");
+                    }
+
+                    if (procurado->problema->servico[2]){
+                        printf("- Hospital\n");
+                    }
+                    printf("Prioridade: %d\n", procurado->problema->prioridade);
+                    printf("Tempo de Registro (ciclo): %lld (Hora Aprox.: %02lld:%02lld)\n",
+                            (long long)procurado->problema->tempo_registro,
+                            ((long long)procurado->problema->tempo_registro - 1) * 10 / 60,
+                            ((long long)procurado->problema->tempo_registro - 1) * 10 % 60);
+                    printf("Tempo de Atendimento (ciclo): %lld (Hora Aprox.: %02lld:%02lld)\n",
+                            (long long)procurado->problema->tempo_atendimento,
+                            ((long long)procurado->problema->tempo_atendimento - 1) * 10 / 60,
+                            ((long long)procurado->problema->tempo_atendimento - 1) * 10 % 60);
+                    printf("--------------------------\n");
+                }
                 break;
             case 0:
                 printf("Saindo do menu de consulta.\n");

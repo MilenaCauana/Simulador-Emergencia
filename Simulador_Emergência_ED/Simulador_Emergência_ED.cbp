@@ -34,13 +34,18 @@
 		<Unit filename="Structs.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="include/arvore_binaria_busca.h" />
 		<Unit filename="include/bairro.h" />
 		<Unit filename="include/bombeiro.h" />
 		<Unit filename="include/fila_de_ocorrencias.h" />
 		<Unit filename="include/hospital.h" />
 		<Unit filename="include/morador.h" />
 		<Unit filename="include/ocorrencias.h" />
+		<Unit filename="include/pilha1.h" />
 		<Unit filename="include/policia.h" />
+		<Unit filename="src/arvore_binaria_busca.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="src/bairro.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -60,6 +65,9 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="src/ocorrencias.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/pilha.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="src/policia.c">

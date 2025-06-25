@@ -6,6 +6,7 @@
 #include "../include/ocorrencias.h"
 #include "../include/morador.h"
 #include "../include/bairro.h"
+//#include "../include/arvore_binaria_busca.h"
 
 #define MAX 40
 
@@ -41,9 +42,11 @@ typedef enum tipo_de_ocorrencia{
 * Retorna: void
 *
 */
-void gera_id_ocorrencia(int num, Ocorrencia *ocorrencia){
-     int complemento = rand() % 1000; // Gera um ID único de 0 a 999
-     ocorrencia -> id = (num * 1000) + complemento; // ID baseado no tipo + complemento
+int incr_ocor = 0; //incrementador em escopo global para o valor aumentar com a geração de ids
+
+void gera_id_ocorrencia(Ocorrencia *ocorrencia){
+     incr_ocor++;
+     ocorrencia -> id = 2000 + incr_ocor;; // ID simples para facilitar chaveamento da ABB
 }
 
 /*
@@ -210,7 +213,7 @@ Ocorrencia* cria_ocorrencia(Bairros_Hash* ha, Morador_Hash *hash_morador){
             break;
         }
 
-        gera_id_ocorrencia(num, ocorrencia);
+        gera_id_ocorrencia(ocorrencia);
 
         //Pegar um morador de forma aleatória
         ocorrencia -> morador = morador_aleatorio(hash_morador);
@@ -263,6 +266,7 @@ Ocorrencia* cria_ocorrencia(Bairros_Hash* ha, Morador_Hash *hash_morador){
 *
 */
 void exibir_ocorrencia_especifica(Ocorrencia *ocorrencia){
+    printf("\n...\n");
     if (ocorrencia == NULL) {
         printf("Erro: Ocorrencia nao existe.\n");
         return;
