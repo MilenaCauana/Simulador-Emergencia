@@ -5,27 +5,25 @@
 #include <string.h>
 #include <locale.h>
 
-#include "../include/fila_de_ocorrencias.h"
 #include "../include/ocorrencias.h"
 #include "../include/morador.h"
 #include "../include/bairro.h"
 #include "../include/policia.h"
 #include "../include/bombeiro.h"
 #include "../include/hospital.h"
-#include "../include/pilha1.h"
+#include "../include/arvore_avl.h"
+#include "../include/lista.h"
 #include "../include/arvore_binaria_busca.h"
 
+#define DIA 144
 
 int main() {
-    // Configura o locale para exibir caracteres especiais (acentos, cedilhas)
     setlocale(LC_ALL, "");
-
-    // Inicializa o gerador de números aleatórios
     srand(time(NULL));
 
     printf("--- SIMULACAO DE SISTEMA DE EMERGENCIA ---\n");
 
-    // 1. Preencher as tabelas hash de bairros, morador, polícia, bombeiro, hospitais e moradores
+    //Preenchendo as tabelas hash de bairros, morador, polícia, bombeiro, hospitais e moradores
     printf("\nInicializando bases de dados...\n");
     Bairros_Hash *bairros = preenche_bairros();
     Morador_Hash *moradores = preenche_morador();
@@ -39,20 +37,13 @@ int main() {
     }
     printf("Bases de dados inicializadas com sucesso!\n");
 
-    //Exibindo bairros e moradores para conferência
-    bairros_exibir(bairros);
-    morador_exibir(moradores);
+    // ---- Estruturas de dados ----
 
-    printf("\nCriando fila de ocorrencias...\n");
-    Descritor *fila_ocorrencias = cria_fila();
-    printf("Fila de ocorrencias criada!\n");
-
-    // Pilha para armazenar ocorrências atendidas para o relatório final
-    Pilha *relatorio_final = cria_pilha(); // Inicializa a pilha
-    if (!relatorio_final) {
+    // Fila para armazenar ocorrências atendidas para o relatório final
+    ListaLigadaRelatorio *relatorio_final = cria_lista_relatorio(); // Inicializa a pilha
+    if (relatorio_final == NULL) {
         printf("Erro ao criar a pilha de relatorio. Encerrando.\n");
         // Liberar o que já foi alocado antes de sair
-        free_fila(fila_ocorrencias);
         bairro_libera_hash(bairros);
         policia_libera_hash(policias);
         bombeiro_libera_hash(bombeiros);
@@ -61,69 +52,155 @@ int main() {
         return 1;
     }
 
+    //Fila para armazenar as ocorrências que estão sendo atendidas
+    ListaLigadaRelatorio *em_atendimento = cria_lista_relatorio(); // Inicializa a pilha
+    if (em_atendimento == NULL) {
+        printf("Erro ao criar a fila de relatorio. Encerrando.\n");
+        // Liberar o que já foi alocado antes de sair
+        bairro_libera_hash(bairros);
+        policia_libera_hash(policias);
+        bombeiro_libera_hash(bombeiros);
+        hospital_libera_hash(hospitais);
+        morador_libera_hash(moradores);
+        return 1;
+    }
+
+    //Criando Árvore AVL para prioridade
+    AVL *arvoreAVL = criarArvoreAVL();
 
     printf("\n--- INICIANDO SIMULACAO DE EMERGENCIAS (1 Dia = 144 ciclos de 10 min) ---\n");
-    int ciclo = 1;
-    int total_ciclos_dia = 144; // 24 horas * 60 minutos/hora / 10 minutos/ciclo = 144 ciclos
+    int ciclo = 0;
+    Ocorrencia *ocorrencia1, *ocorrencia2;
 
-    while (ciclo <= total_ciclos_dia) { // Simula 144 ciclos de tempo (equivalente a 1 dia)
-        printf("\n========== CICLO DE TEMPO: %d (Hora: %02d:%02d) ==========\n", ciclo, (ciclo - 1) * 10 / 60, (ciclo - 1) * 10 % 60);
+    while (ciclo <= DIA) {
+        int hora = (ciclo * 10) /60;
+        int min = (ciclo * 10) %60;
 
-        // 3. Gerar e enfileirar novas ocorrências aleatoriamente
-        printf("Gerando %d novas ocorrencias...\n", gera_qtd_no()); // Chama gera_qtd_no para informar a quantidade
-        // Passa o hash de moradores para cria_ocorrencia via enfileirando
-        enfileirando(fila_ocorrencias, bairros, moradores);
-        exibe_fila(fila_ocorrencias);
+        printf("\n========== CICLO DE TEMPO: %d (Hora: %02d:%02d) ==========\n", ciclo, hora, min);
 
-        // 4. Processar ocorrências na fila (despachar serviços)
-        printf("\nProcessando ocorrencias na fila...\n");
-        while (fila_ocorrencias->tamanho > 0) {
-            Ocorrencia *ocorrencia_atual = remove_da_fila(fila_ocorrencias);
-            if (ocorrencia_atual != NULL) {
-                // Define o tempo de atendimento com base no ciclo atual
-                ocorrencia_atual->tempo_atendimento = ciclo;
+        //Gerar e enfileirar novas ocorrências
+        int qtd_ocorr_ciclo = rand() % 3;
 
-                // Despacha os serviços para a ocorrência
-                despacha_servicos(ocorrencia_atual, policias, bombeiros, hospitais);
+        while(qtd_ocorr_ciclo > 0){
+            printf("Gerando nova ocorrencia...\n");
+            Ocorrencia *ocorrencia = cria_ocorrencia(bairros, moradores, ciclo);
 
-                // Adiciona a ocorrência (com os tempos de registro e atendimento) ao relatório
-                // A função push_pilha_relatorio apenas empilha o ponteiro da ocorrência,
-                // a ocorrência será liberada no final, após o relatório ser impresso,
-                // ou se for movida para o histórico do morador.
-                push_pilha(relatorio_final, ocorrencia_atual);
 
-                // IMPORTANTE: Não libera ocorrencia_atual aqui. Ela será liberada
-                // por 'free_ocorrencia' quando for movida para o histórico do morador
-                // ou quando o relatório final for liberado (se a ocorrência não tiver sido movida).
-                // A lógica de liberação da ocorrência deve ser centralizada para evitar double free ou memory leak.
-                // Considerando o seu `free_fila` e `free_pilha_relatorio` que não liberam a Ocorrencia*,
-                // a liberação da Ocorrencia* em si deve ser feita na main.c, provavelmente
-                // após processar o relatório ou o histórico do morador.
+            printf(" \nOCORRÊNCIA CRIADA: \n");
+            exibir_ocorrencia_especifica(ocorrencia);
+
+            //Agora, adicionaremos na Árvore AVL de prioridade
+            inserirOcorrenciaAVL(arvoreAVL, ocorrencia);
+
+            qtd_ocorr_ciclo--;
+        }
+
+
+        printf("Ocorrência na lista árvore AVL.\n ");
+
+         //Tentar despachar a ocorrência de maior prioridade ---
+        if (arvoreAVL -> raiz != NULL) {
+
+            // 1. Primeiro, apenas "espiamos" a ocorrência mais urgente sem removê-la.
+            Ocorrencia* ocorr_para_atender = obter_ocorrencia_maior_prioridade(arvoreAVL);
+
+            printf("Tentando despachar Ocorrencia ID %d (Prioridade %d)...\n", ocorr_para_atender->id, ocorr_para_atender->prioridade);
+
+            bool recursos_alocados = true;
+            int id_pol = 0, id_bom = 0, id_hos = 0;
+
+            // 2. Verificamos se temos os recursos necessários para ELA.
+            if (ocorr_para_atender->servico[0]) {
+                id_pol = despacha_policia(policias, ocorr_para_atender->bairro->id);
+                if (id_pol == 0) recursos_alocados = false;
+            }
+            if (recursos_alocados && ocorr_para_atender->servico[1]) {
+                id_bom = despacha_bombeiro(bombeiros, ocorr_para_atender->bairro->id);
+                if (id_bom == 0) recursos_alocados = false;
+            }
+            if (recursos_alocados && ocorr_para_atender->servico[2]) {
+                id_hos = despacha_hospital(hospitais, ocorr_para_atender->bairro->id);
+                if (id_hos == 0) recursos_alocados = false;
+            }
+
+            // 3. Se TODOS os recursos foram alocados com sucesso...
+            if (recursos_alocados) {
+                printf("=> SUCESSO! Recursos alocados para Ocorrencia ID %d.\n", ocorr_para_atender->id);
+
+                // ...AGORA SIM, removemos a ocorrência da árvore de pendentes.
+                Ocorrencia* ocorr_atendida = removerOcorrenciaMaiorPrioridade(arvoreAVL);
+
+                // E a movemos para a lista de "Em Atendimento".
+                ocorr_atendida->status = EM_ATENDIMENTO;
+                ocorr_atendida->id_unidade_policia = id_pol;
+                ocorr_atendida->id_unidade_bombeiro = id_bom;
+                ocorr_atendida->id_unidade_hospital = id_hos;
+                adiciona_inicio_lista_relatorio(em_atendimento, ocorr_atendida);
+
+            } else {
+                printf("=> FALHA! Recursos indisponiveis. Ocorrencia ID %d permanece pendente.\n", ocorr_para_atender->id);
+
+                // IMPORTANTE: Se a alocação falhou no meio do caminho (ex: alocou polícia mas não bombeiro),
+                // temos que devolver os recursos que foram temporariamente pegos.
+                if (id_pol != 0) liberar_policia(policias, id_pol);
+                if (id_bom != 0) liberar_bombeiro(bombeiros, id_bom);
+                if (id_hos != 0) liberar_hospital(hospitais, id_hos);
             }
         }
-        printf("Fila de ocorrencias esvaziada para este ciclo.\n");
 
-        // Unidades de serviço retornam (são redefinidas para o total disponível para este ciclo)
-        printf("Restaurando a disponibilidade total das unidades para o proximo ciclo...\n");
-        for (int i = 0; i < policias->tamanho; i++) {
-            if (policias->itens[i] != NULL) {
-                policias->itens[i]->viaturas_disp = policias->itens[i]->viaturas;
-            }
-        }
-        for (int i = 0; i < bombeiros->tamanho; i++) {
-            if (bombeiros->itens[i] != NULL) {
-                bombeiros->itens[i]->caminhoes_disp = bombeiros->itens[i]->caminhoes;
-            }
-        }
-        for (int i = 0; i < hospitais->tamanho; i++) {
-            if (hospitais->itens[i] != NULL) {
-                hospitais->itens[i]->ambulancias_disp = hospitais->itens[i]->ambulancias;
-            }
-        }
-        printf("Disponibilidade das unidades restaurada.\n");
+        printf("\n\n=========== ATUALIZAÇÃO DE OCORRÊNCIAS EM ANDAMENTO ============\n\n");
+        // --- PASSO 3: Atualizar ocorrências em atendimento ---
+        NoLista **pp_atual = &(em_atendimento -> cabeca);
+        while (*pp_atual != NULL) {
 
-        ciclo++;
+            Ocorrencia *ocorr_atual = (*pp_atual) -> ocorrencia;
+            exibir_ocorrencia_especifica(ocorr_atual);
+            ocorr_atual -> ciclos_restantes--;
+            printf("----: Nova quantidade de ciclos restantes: %d\n", ocorr_atual -> ciclos_restantes);
+
+            if (ocorr_atual->ciclos_restantes <= 0) {
+                printf("Ocorrencia ID %d FINALIZADA no ciclo %d.\n", ocorr_atual->id, ciclo);
+                ocorr_atual -> status = FINALIZADA;
+                ocorr_atual -> ciclo_finalizacao = ciclo;
+
+                // Liberar recursos
+                liberar_policia(policias, ocorr_atual->id_unidade_policia);
+                liberar_bombeiro(bombeiros, ocorr_atual->id_unidade_bombeiro);
+                liberar_hospital(hospitais, ocorr_atual->id_unidade_hospital);
+
+                // Mover para a lista do relatório final
+                NoLista *no_a_remover = *pp_atual;
+                *pp_atual = no_a_remover->prox;
+                em_atendimento->tamanho--;
+
+                no_a_remover->prox = NULL; // Isolar o nó
+                adiciona_inicio_lista_relatorio(relatorio_final, ocorr_atual);
+                free(no_a_remover);
+
+            } else {
+                pp_atual = &((*pp_atual)->prox);
+            }
+        }
+
+        ciclo ++;
     }
+
+    printf("\n--- SIMULACAO ENCERRADA ---\n");
+
+    // Montando o relatório final completo
+    printf("Montando relatorio final...\n");
+    // Mover ocorrências que ainda estavam "Em Atendimento" para o relatório
+    while(em_atendimento -> cabeca != NULL) {
+        Ocorrencia* ocorr = remove_inicio_lista_relatorio(em_atendimento);
+        adiciona_inicio_lista_relatorio(relatorio_final, ocorr);
+    }
+    // Mover ocorrências que ficaram "Pendentes" para o relatório
+    while(arvoreAVL -> raiz != NULL) {
+        Ocorrencia* ocorr = removerOcorrenciaMaiorPrioridade(arvoreAVL);
+        adiciona_inicio_lista_relatorio(relatorio_final, ocorr);
+    }
+
+    morador_atribui_relatorio_final(moradores, relatorio_final);
 
     ArvB ABB;
     ABB.raiz = cria_arvore_binaria(relatorio_final);
@@ -156,13 +233,21 @@ int main() {
             case 1:
                 morador_exibir(moradores);
                 break;
+
             case 2:
                 printf("Digite o CPF do morador: ");
                 scanf("%lld", &cpf);
-                getchar(); // Limpar o buffer
-                morador_encontrado = morador_busca_hash_sem_colisao(moradores, cpf);
-                exibir_morador_especifico(morador_encontrado);
+                getchar();
+
+                morador_encontrado = morador_busca_hash_encadeamento(moradores, cpf);
+
+                if (morador_encontrado != NULL) {
+                    exibir_morador_especifico(morador_encontrado);
+                } else {
+                    printf("Morador com CPF %lld nao encontrado na base de dados.\n", cpf);
+                }
                 break;
+
             case 3:
                 bairros_exibir(bairros);
                 break;
@@ -173,10 +258,12 @@ int main() {
                 bairro_encontrado = bairro_busca_hash_sem_colisao(bairros, id);
                 exibir_bairro_especifico(bairro_encontrado);
                 break;
+
             case 5:
                 printf("\n--- RELATORIO FINAL DAS OCORRENCIAS ATENDIDAS ---\n");
-                imprime_pilha(relatorio_final);
+                imprime_lista_relatorio(relatorio_final);
                 break;
+
             case 6:
                 printf("\nDigite ID de uma ocorrencia:");
                 scanf("%d", &id);
@@ -184,61 +271,30 @@ int main() {
                 if(procurado == NULL){
                     printf("\nID inválido!");
                 }else{
-                    printf("ID: %d\n", procurado->problema->id);
-                    printf("Tipo: %s\n", procurado->problema->tipo);
-                    printf("Bairro: %s (ID: %d)\n", procurado->problema->bairro->nome, procurado->problema->bairro->id);
-                    printf("Morador: %s (CPF: %lld)\n", procurado->problema->morador->nome, procurado->problema->morador->cpf);
-                    printf("--- Servicos Necessitados ---\n");
-                    if (procurado->problema->servico[0]){
-                        printf("- Policia\n");
-                    }
-
-                    if (procurado->problema->servico[1]){
-                        printf("- Bombeiro\n");
-                    }
-
-                    if (procurado->problema->servico[2]){
-                        printf("- Hospital\n");
-                    }
-                    printf("Prioridade: %d\n", procurado->problema->prioridade);
-                    printf("Tempo de Registro (ciclo): %lld (Hora Aprox.: %02lld:%02lld)\n",
-                            (long long)procurado->problema->tempo_registro,
-                            ((long long)procurado->problema->tempo_registro - 1) * 10 / 60,
-                            ((long long)procurado->problema->tempo_registro - 1) * 10 % 60);
-                    printf("Tempo de Atendimento (ciclo): %lld (Hora Aprox.: %02lld:%02lld)\n",
-                            (long long)procurado->problema->tempo_atendimento,
-                            ((long long)procurado->problema->tempo_atendimento - 1) * 10 / 60,
-                            ((long long)procurado->problema->tempo_atendimento - 1) * 10 % 60);
-                    printf("--------------------------\n");
+                    exibir_ocorrencia_especifica(procurado -> problema);
                 }
                 break;
+
             case 0:
                 printf("Saindo do menu de consulta.\n");
                 break;
+
             default:
                 printf("Opcao invalida. Tente novamente.\n");
         }
     } while (opcao != 0);
 
-    // 7. Liberar toda a memória alocada
     printf("\nLiberando memoria alocada...\n");
-    free_fila(fila_ocorrencias); // Libera a fila (que deve estar vazia ao final)
-
-    // Libera as ocorrências que estão na pilha do relatório, e depois a própria pilha.
-    // Isso é crucial para evitar memory leaks das ocorrências.
-    Ocorrencia *temp_ocorrencia;
-    while ((temp_ocorrencia = pop_pilha_relatorio(relatorio_final)) != NULL) {
-        free_ocorrencia(temp_ocorrencia); // Assuming you have a free_ocorrencia function in ocorrencias.c
-    }
-    free_pilha_relatorio(relatorio_final); // Libera a estrutura da pilha
+    free_lista_relatorio(relatorio_final); // Esta função já deve liberar as ocorrências
+    free_lista_relatorio(em_atendimento); // Deveria estar vazia, mas por segurança
+    destruirArvoreAVL(arvoreAVL); // Libera a árvore e nós restantes
 
     bairro_libera_hash(bairros);
     policia_libera_hash(policias);
     bombeiro_libera_hash(bombeiros);
     hospital_libera_hash(hospitais);
-    morador_libera_hash(moradores); // Libera o hash de moradores e seus históricos de ocorrências
+    morador_libera_hash(moradores);
 
     printf("Memoria liberada com sucesso!\n");
-
     return 0;
 }

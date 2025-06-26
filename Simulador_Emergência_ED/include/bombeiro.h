@@ -35,4 +35,8 @@ void limpa_hash_bombeiro(Bombeiro_Hash *ha); //Retorna: void
 
 Bombeiro_Hash* preenche_bombeiro();
 
+int despacha_bombeiro(Bombeiro_Hash *ha, int id_bombeiro_ocorrencia);
+
+void liberar_bombeiro(Bombeiro_Hash *ha, int id_unidade_bombeiro);
+
 #endif // BOMBEIRO_H_INCLUDED

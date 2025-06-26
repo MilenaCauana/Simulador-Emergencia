@@ -221,3 +221,47 @@ Bombeiro_Hash* preenche_bombeiro(){
 
     return ha;
 }
+
+// Função para tentar alocar um caminhão para uma ocorrência.
+// Retorna o ID da delegacia se bem-sucedido, 0 caso contrário.
+int despacha_bombeiro(Bombeiro_Hash *ha, int id_bombeiro_ocorrencia) {
+    if (ha == NULL) return 0;
+
+    // Lógica para mapear ID do bairro para ID da polícia (ex: 1001 -> 100190)
+    int id_bombeiro_local = ((id_bombeiro_ocorrencia / 1000) * 10000) + (id_bombeiro_ocorrencia % 1000) * 10 + 90;
+
+    // 1. Tenta encontrar a polícia do bairro da ocorrência
+    for (int i = 0; i < ha -> tamanho; i++) {
+        if (ha -> itens[i] != NULL && ha -> itens[i]->id == id_bombeiro_local) {
+            if (ha->itens[i]->caminhoes_disp > 0) {
+                ha->itens[i]->caminhoes_disp--;
+                return ha->itens[i]->id;
+            }
+            break; // Encontrou a delegacia local, mas não tem viatura, não adianta procurar mais por ela
+        }
+    }
+
+    // 2. Se não conseguiu no bairro local, procura em qualquer outro bairro
+    for (int i = 0; i < ha->tamanho; i++) {
+        if (ha->itens[i] != NULL && ha->itens[i]->caminhoes_disp > 0) {
+            ha->itens[i]->caminhoes_disp--;
+            return ha->itens[i]->id; // Retorna o ID da unidade que atendeu
+        }
+    }
+
+    return 0; // Nenhuma viatura disponível em nenhum lugar
+}
+
+// Função para liberar uma viatura, devolvendo-a para sua delegacia.
+void liberar_bombeiro(Bombeiro_Hash *ha, int id_unidade_bombeiro) {
+    if (ha == NULL || id_unidade_bombeiro == 0) return;
+
+    for (int i = 0; i < ha->tamanho; i++) {
+        if (ha->itens[i] != NULL && ha->itens[i]->id == id_unidade_bombeiro) {
+            if (ha->itens[i]->caminhoes_disp < ha->itens[i]->caminhoes) {
+                ha->itens[i]->caminhoes_disp++;
+            }
+            return;
+        }
+    }
+}

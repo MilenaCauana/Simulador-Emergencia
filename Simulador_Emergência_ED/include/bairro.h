@@ -19,6 +19,7 @@ typedef struct bairros_hash{
 
 //---FUNÇÕES PÚBLICAS---
 Bairros_Hash *cria_hash_bairros(int tamanho);
+
 void bairro_libera_hash(Bairros_Hash *ha);
 
 int bairro_insere_hash_sem_colisao(Bairros_Hash *ha, Bairros bairro);

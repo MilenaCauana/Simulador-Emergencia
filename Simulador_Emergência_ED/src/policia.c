@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include<stdbool.h>
+#include <stdbool.h>
 #include <string.h>
 #include "../include/policia.h"
 #include "../include/bairro.h"
@@ -226,4 +226,48 @@ Policia_Hash* preenche_policia(){
     policia_insere_hash_sem_colisao(ha, policia7);
 
     return ha;
+}
+
+// Função para tentar alocar uma viatura para uma ocorrência.
+// Retorna o ID da delegacia se bem-sucedido, 0 caso contrário.
+int despacha_policia(Policia_Hash *ha, int id_bairro_ocorrencia) {
+    if (ha == NULL) return 0;
+
+    // Lógica para mapear ID do bairro para ID da polícia (ex: 1001 -> 100190)
+    int id_policia_local = ((id_bairro_ocorrencia / 1000) * 10000) + (id_bairro_ocorrencia % 1000) * 10 + 90;
+
+    // 1. Tenta encontrar a polícia do bairro da ocorrência
+    for (int i = 0; i < ha->tamanho; i++) {
+        if (ha->itens[i] != NULL && ha->itens[i]->id == id_policia_local) {
+            if (ha->itens[i]->viaturas_disp > 0) {
+                ha->itens[i]->viaturas_disp--;
+                return ha->itens[i]->id;
+            }
+            break; // Encontrou a delegacia local, mas não tem viatura, não adianta procurar mais por ela
+        }
+    }
+
+    // 2. Se não conseguiu no bairro local, procura em qualquer outro bairro
+    for (int i = 0; i < ha->tamanho; i++) {
+        if (ha->itens[i] != NULL && ha->itens[i]->viaturas_disp > 0) {
+            ha->itens[i]->viaturas_disp--;
+            return ha->itens[i]->id; // Retorna o ID da unidade que atendeu
+        }
+    }
+
+    return 0; // Nenhuma viatura disponível em nenhum lugar
+}
+
+// Função para liberar uma viatura, devolvendo-a para sua delegacia.
+void liberar_policia(Policia_Hash *ha, int id_unidade_policial) {
+    if (ha == NULL || id_unidade_policial == 0) return;
+
+    for (int i = 0; i < ha->tamanho; i++) {
+        if (ha->itens[i] != NULL && ha->itens[i]->id == id_unidade_policial) {
+            if (ha->itens[i]->viaturas_disp < ha->itens[i]->viaturas) {
+                ha->itens[i]->viaturas_disp++;
+            }
+            return;
+        }
+    }
 }

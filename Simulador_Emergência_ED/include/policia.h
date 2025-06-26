@@ -35,4 +35,8 @@ void limpa_hash_policia(Policia_Hash *ha); //Retorna: void
 
 Policia_Hash* preenche_policia();
 
+int despacha_policia(Policia_Hash *ha, int id_bairro_ocorrencia);
+
+void liberar_policia(Policia_Hash *ha, int id_unidade_policial);
+
 #endif // POLICIA_H_INCLUDED

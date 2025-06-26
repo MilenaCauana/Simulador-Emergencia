@@ -35,4 +35,8 @@ void limpa_hash_hospital(Hospital_Hash *ha); //Retorna: void
 
 Hospital_Hash* preenche_hospital();
 
+int despacha_hospital(Hospital_Hash *ha, int id_hospital_ocorrencia);
+
+void liberar_hospital(Hospital_Hash *ha, int id_unidade_hospi);
+
 #endif // HOSPITAL_H_INCLUDED

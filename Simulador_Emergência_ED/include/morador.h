@@ -4,16 +4,18 @@
 // Forward declaration para Bairros e Ocorrencia para evitar dependência circular
 typedef struct bairros_da_cidade Bairros;
 typedef struct ocorrencia Ocorrencia;
+typedef struct ListaLigada ListaLigadaRelatorio;
 
 #define MAX 40
 #define TAMANHO 23 // Tamanho da hash para moradores, ajustado para os CPFs gerados
 
 // ---------- DEFININDO ESTRUTURAS --------
 typedef struct morador {
-    long long int cpf; // Alterado para long long int para o CPF
-    char nome[MAX];
-    Ocorrencia *ocorrencias[50]; // Um array de ponteiros para as ocorrências
+    char nome[100]; // ou o tamanho que você definiu
+    long long int cpf;
     int num_ocorrencias;
+    Ocorrencia* ocorrencias[50];
+    struct morador *proximo;
 } Morador;
 
 typedef struct morador_hash{
@@ -39,7 +41,9 @@ void limpa_hash_morador(Morador_Hash *ha);
 
 Morador_Hash* preenche_morador();
 
-Morador* morador_aleatorio(Morador_Hash *ha); // Adicionado ponto e virgula
+Morador* morador_aleatorio(Morador_Hash *ha);
+
+void morador_atribui_relatorio_final(Morador_Hash *ha, ListaLigadaRelatorio *relatorio);
 
 // ------ ºº PROTÓTIPOS DAS FUNÇÕES DE EXIBIÇÃO ºº ------
 void morador_exibir(Morador_Hash *ha);

@@ -126,38 +126,4 @@ int gera_qtd_no();
 */
 void enfileirando(Descritor *D, Bairros_Hash *ha, Morador_Hash *hash_morador);
 
-/*
-*---Função para buscar e despachar uma unidade de polícia--
-* Recebe: A tabela hash da polícia, o ID do bairro da ocorrência
-* Retorna: true se uma unidade foi despachada, false caso contrário
-*
-*/
-bool despacha_policia(Policia_Hash *policia_ha, int id_bairro_ocorrencia);
-
-/*
-*---Função para buscar e despachar uma unidade de bombeiro--
-* Recebe: A tabela hash do bombeiro, o ID do bairro da ocorrência
-* Retorna: true se uma unidade foi despachada, false caso contrário
-*
-*/
-bool despacha_bombeiro(Bombeiro_Hash *bombeiro_ha, int id_bairro_ocorrencia);
-
-/*
-*---Função para buscar e despachar uma unidade de hospital--
-* Recebe: A tabela hash do hospital, o ID do bairro da ocorrência
-* Retorna: true se uma unidade foi despachada, false caso contrário
-*
-*/
-bool despacha_hospital(Hospital_Hash *hospital_ha, int id_bairro_ocorrencia);
-
-/*
-*---Função para simular o despacho de serviços--
-* Recebe: A ocorrência a ser despachada e as tabelas hash das unidades de serviço
-* Retorna: void
-*
-*/
-void despacha_servicos(Ocorrencia *ocorrencia, Policia_Hash *policia_ha, Bombeiro_Hash *bombeiro_ha, Hospital_Hash *hospital_ha);
-
-void free_ocorrencia(Ocorrencia *ocorr);
-
 #endif // FILA_DE_OCORRENCIAS_H_INCLUDED
