@@ -16,7 +16,7 @@
 #include "../include/arvore_binaria_busca.h"
 #include "../include/lista_cruzada.h"
 
-#define DIA 5
+#define DIA 144
 
 int main() {
     setlocale(LC_ALL, "");
