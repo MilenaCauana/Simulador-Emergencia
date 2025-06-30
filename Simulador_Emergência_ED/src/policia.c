@@ -123,9 +123,9 @@ int policia_insere_hash_sem_colisao(Policia_Hash *ha, Policia policia){
 * Para receber a policia, mandar como parâmetro um ponteiro do tipo policia, o qual será atribuido as informações
 *
 */
-int policia_busca_hash_sem_colisao(Policia_Hash* ha, int id, Policia *policia){
-   if (ha == NULL){
-    return 0;
+Policia* policia_busca_hash(Policia_Hash* ha, int id){
+    if (ha == NULL){
+       return NULL;
    }
 
    int pos = policia_chave_divisao(id, ha -> tamanho);
@@ -134,15 +134,14 @@ int policia_busca_hash_sem_colisao(Policia_Hash* ha, int id, Policia *policia){
    // Lógica de busca que reflete o linear probing da inserção
    while (ha->itens[pos] != NULL) {
        if (ha->itens[pos]->id == id) {
-           *policia = *(ha -> itens[pos]);
-           return 1;
+           return ha->itens[pos]; // Retorna o ponteiro para a Policia encontrada na hash
        }
        pos = (pos + 1) % ha->tamanho;
        if (pos == inicio_pos) {
-           return 0;
+           return NULL; // Percorreu a tabela sem encontrar
        }
    }
-   return 0;
+   return NULL; // Não encontrado
 }
 
 /*

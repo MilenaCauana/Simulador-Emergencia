@@ -7,13 +7,15 @@
 typedef struct bairros_da_cidade {
     char nome[NOME];
     int id;
+    int id_policia_responsavel;
+    int id_bombeiro_responsavel;
+    int id_hospital_responsavel;
 } Bairros;
 
 typedef struct bairros_hash{
     int qtd, tamanho;//qtd -> diz respeito à quantidade de elementos já armazenados, e tamanho ao tamanho da tabela hash
     Bairros **itens;
 }Bairros_Hash;
-
 
 //------ ºº FUNÇÕES DE IMPLEMENTAÇÂO DO HASHING ºº ------
 

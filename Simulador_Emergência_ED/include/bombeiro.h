@@ -29,7 +29,7 @@ void bombeiro_libera_hash(Bombeiro_Hash *ha);
 
 int bombeiro_insere_hash_sem_colisao(Bombeiro_Hash *ha, Bombeiro bombeiro);
 
-int bombeiro_busca_hash_sem_colisao(Bombeiro_Hash* ha, int id, Bombeiro *bombeiro);
+Bombeiro* bombeiro_busca_hash(Bombeiro_Hash* ha, int id);
 
 void limpa_hash_bombeiro(Bombeiro_Hash *ha); //Retorna: void
 

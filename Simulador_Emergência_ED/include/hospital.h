@@ -29,7 +29,7 @@ void hospital_libera_hash(Hospital_Hash *ha);
 
 int hospital_insere_hash_sem_colisao(Hospital_Hash *ha, Hospital hospital);
 
-int hospital_busca_hash_sem_colisao(Hospital_Hash* ha, int id, Hospital *hospital);
+Hospital* hospital_busca_hash(Hospital_Hash* ha, int id);
 
 void limpa_hash_hospital(Hospital_Hash *ha); //Retorna: void
 

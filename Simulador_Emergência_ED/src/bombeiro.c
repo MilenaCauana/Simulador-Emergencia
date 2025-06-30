@@ -119,26 +119,24 @@ int bombeiro_insere_hash_sem_colisao(Bombeiro_Hash *ha, Bombeiro bombeiro){
 * Retorna: inteiro booleano para definir se deu certo a busca, preenchendo o ponteiro 'bombeiro'
 *
 */
-int bombeiro_busca_hash_sem_colisao(Bombeiro_Hash* ha, int id, Bombeiro *bombeiro){
+Bombeiro* bombeiro_busca_hash(Bombeiro_Hash* ha, int id){
    if (ha == NULL){
-    return 0;
+       return NULL;
    }
 
    int pos = bombeiro_chave_divisao(id, ha -> tamanho);
    int inicio_pos = pos;
 
-   // Lógica de busca que reflete o linear probing da inserção
    while (ha->itens[pos] != NULL) {
        if (ha->itens[pos]->id == id) {
-           *bombeiro = *(ha -> itens[pos]); // Copia os dados encontrados
-           return 1; // Encontrado
+           return ha->itens[pos]; // Retorna o ponteiro para o Bombeiro encontrado na hash
        }
        pos = (pos + 1) % ha->tamanho;
-       if (pos == inicio_pos) { // Loop completo, não encontrado
-           return 0;
+       if (pos == inicio_pos) {
+           return NULL;
        }
    }
-   return 0;
+   return NULL;
 }
 
 /*

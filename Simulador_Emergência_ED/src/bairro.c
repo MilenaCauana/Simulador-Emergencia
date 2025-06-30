@@ -122,18 +122,23 @@ int bairro_insere_hash_sem_colisao(Bairros_Hash *ha, Bairros bairro){
 *
 */
 Bairros* bairro_busca_hash_sem_colisao(Bairros_Hash* ha, int id){
-
    if (ha == NULL){
-    return NULL;
+       return NULL;
    }
 
    int pos = bairro_chave_divisao(id, ha -> tamanho);
+   int inicio_pos = pos;
 
-   if (ha -> itens[pos] == NULL){
-    return NULL;
+   while (ha->itens[pos] != NULL) {
+       if (ha->itens[pos]->id == id) {
+           return ha->itens[pos]; // Retorna o ponteiro para o bairro encontrado
+       }
+       pos = (pos + 1) % ha->tamanho;
+       if (pos == inicio_pos) {
+           return NULL; // Percorreu a tabela sem encontrar
+       }
    }
-
-   return ha -> itens[pos];;
+   return NULL; // Não encontrado
 }
 
 /*
@@ -163,7 +168,7 @@ void limpa_hash_bairros(Bairros_Hash *ha){
 
     }
 
-    ha->qtd = 0;
+    ha -> qtd = 0;
 
 }
 
@@ -180,46 +185,73 @@ Bairros_Hash* preenche_bairros(){
     Bairros bairro1;
     strcpy (bairro1.nome, "Jardim das Anas");
     bairro1.id = 1001;
+    bairro1.id_policia_responsavel = bairro1.id * 100 + 90; // Ex: 1001 -> 100190
+    bairro1.id_bombeiro_responsavel = bairro1.id * 100 + 93;
+    bairro1.id_hospital_responsavel = bairro1.id * 100 + 95;
     bairro_insere_hash_sem_colisao(ha, bairro1);
 
     Bairros bairro2;
     strcpy (bairro2.nome, "Vila Sao Pedroso");
     bairro2.id = 1002;
+    bairro2.id_policia_responsavel = bairro2.id * 100 + 90; // Ex: 1001 -> 100190
+    bairro2.id_bombeiro_responsavel = bairro2.id * 100 + 93;
+    bairro2.id_hospital_responsavel = bairro2.id * 100 + 95;
     bairro_insere_hash_sem_colisao(ha, bairro2);
 
     Bairros bairro3;
     strcpy (bairro3.nome, "Gugaruja");
     bairro3.id = 1003;
+    bairro3.id_policia_responsavel = bairro3.id * 100 + 90; // Ex: 1001 -> 100190
+    bairro3.id_bombeiro_responsavel = bairro3.id * 100 + 93;
+    bairro3.id_hospital_responsavel = bairro3.id * 100 + 95;
     bairro_insere_hash_sem_colisao(ha, bairro3);
 
     Bairros bairro4;
     strcpy (bairro4.nome, "Igornema");
     bairro4.id = 1004;
+    bairro4.id_policia_responsavel = bairro4.id * 100 + 90; // Ex: 1001 -> 100190
+    bairro4.id_bombeiro_responsavel = bairro4.id * 100 + 93;
+    bairro4.id_hospital_responsavel = bairro4.id * 100 + 95;
     bairro_insere_hash_sem_colisao(ha, bairro4);
 
     Bairros bairro5;
     strcpy (bairro5.nome, "Miicca");
     bairro5.id = 1005;
+    bairro5.id_policia_responsavel = bairro5.id * 100 + 90; // Ex: 1001 -> 100190
+    bairro5.id_bombeiro_responsavel = bairro5.id * 100 + 93;
+    bairro5.id_hospital_responsavel = bairro5.id * 100 + 95;
     bairro_insere_hash_sem_colisao(ha, bairro5);
 
     Bairros bairro6;
     strcpy (bairro6.nome, "Nova Olyans");
     bairro6.id = 1006;
+    bairro6.id_policia_responsavel = bairro6.id * 100 + 90; // Ex: 1001 -> 100190
+    bairro6.id_bombeiro_responsavel = bairro6.id * 100 + 93;
+    bairro6.id_hospital_responsavel = bairro6.id * 100 + 95;
     bairro_insere_hash_sem_colisao(ha, bairro6);
 
     Bairros bairro7;
     strcpy (bairro7.nome, "Fenda dos Parafusos");
     bairro7.id = 1007;
+    bairro7.id_policia_responsavel = bairro7.id * 100 + 90; // Ex: 1001 -> 100190
+    bairro7.id_bombeiro_responsavel = bairro7.id * 100 + 93;
+    bairro7.id_hospital_responsavel = bairro7.id * 100 + 95;
     bairro_insere_hash_sem_colisao(ha, bairro7);
 
     Bairros bairro8;
     strcpy (bairro8.nome, "Ciriacabana");
     bairro8.id = 1008;
+    bairro8.id_policia_responsavel = bairro8.id * 100 + 90; // Ex: 1001 -> 100190
+    bairro8.id_bombeiro_responsavel = bairro8.id * 100 + 93;
+    bairro8.id_hospital_responsavel = bairro8.id * 100 + 95;
     bairro_insere_hash_sem_colisao(ha, bairro8);
 
     Bairros bairro9;
     strcpy (bairro9.nome, "Vila Santa Caroline");
     bairro9.id = 1009;
+    bairro9.id_policia_responsavel = bairro9.id * 100 + 90; // Ex: 1001 -> 100190
+    bairro9.id_bombeiro_responsavel = bairro9.id * 100 + 93;
+    bairro9.id_hospital_responsavel = bairro9.id * 100 + 95;
     bairro_insere_hash_sem_colisao(ha, bairro9);
 
     return ha;

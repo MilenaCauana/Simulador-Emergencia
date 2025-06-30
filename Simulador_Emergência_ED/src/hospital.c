@@ -117,26 +117,24 @@ int hospital_insere_hash_sem_colisao(Hospital_Hash *ha, Hospital hospital){
 * Retorna: inteiro booleano para definir se deu certo a busca, preenchendo o ponteiro 'hospital'
 *
 */
-int hospital_busca_hash_sem_colisao(Hospital_Hash* ha, int id, Hospital *hospital){
+Hospital* hospital_busca_hash(Hospital_Hash* ha, int id){
    if (ha == NULL){
-    return 0;
+       return NULL;
    }
 
    int pos = hospital_chave_divisao(id, ha -> tamanho);
    int inicio_pos = pos;
 
-   // Lógica de busca que reflete o linear probing da inserção
    while (ha->itens[pos] != NULL) {
        if (ha->itens[pos]->id == id) {
-           *hospital = *(ha -> itens[pos]);
-           return 1;
+           return ha->itens[pos]; // Retorna o ponteiro para o Hospital encontrado na hash
        }
        pos = (pos + 1) % ha->tamanho;
        if (pos == inicio_pos) {
-           return 0;
+           return NULL;
        }
    }
-   return 0;
+   return NULL;
 }
 
 /*

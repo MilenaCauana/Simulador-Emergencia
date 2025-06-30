@@ -29,7 +29,7 @@ void policia_libera_hash(Policia_Hash *ha);
 
 int policia_insere_hash_sem_colisao(Policia_Hash *ha, Policia policia);
 
-int policia_busca_hash_sem_colisao(Policia_Hash* ha, int id, Policia *policia);
+Policia* policia_busca_hash(Policia_Hash* ha, int id);
 
 void limpa_hash_policia(Policia_Hash *ha); //Retorna: void
 

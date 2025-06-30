@@ -14,8 +14,9 @@
 #include "../include/arvore_avl.h"
 #include "../include/lista.h"
 #include "../include/arvore_binaria_busca.h"
+#include "../include/lista_cruzada.h"
 
-#define DIA 144
+#define DIA 5
 
 int main() {
     setlocale(LC_ALL, "");
@@ -101,7 +102,7 @@ int main() {
          //Tentar despachar a ocorrência de maior prioridade ---
         if (arvoreAVL -> raiz != NULL) {
 
-            // 1. Primeiro, apenas "espiamos" a ocorrência mais urgente sem removê-la.
+            //Primeiro, apenas "espiamos" a ocorrência mais urgente sem removê-la.
             Ocorrencia* ocorr_para_atender = obter_ocorrencia_maior_prioridade(arvoreAVL);
 
             printf("Tentando despachar Ocorrencia ID %d (Prioridade %d)...\n", ocorr_para_atender->id, ocorr_para_atender->prioridade);
@@ -109,7 +110,7 @@ int main() {
             bool recursos_alocados = true;
             int id_pol = 0, id_bom = 0, id_hos = 0;
 
-            // 2. Verificamos se temos os recursos necessários para ELA.
+            // Verificamos se temos os recursos necessários para ELA.
             if (ocorr_para_atender->servico[0]) {
                 id_pol = despacha_policia(policias, ocorr_para_atender->bairro->id);
                 if (id_pol == 0) recursos_alocados = false;
@@ -123,11 +124,11 @@ int main() {
                 if (id_hos == 0) recursos_alocados = false;
             }
 
-            // 3. Se TODOS os recursos foram alocados com sucesso...
+            //Se TODOS os recursos foram alocados com sucesso...
             if (recursos_alocados) {
                 printf("=> SUCESSO! Recursos alocados para Ocorrencia ID %d.\n", ocorr_para_atender->id);
 
-                // ...AGORA SIM, removemos a ocorrência da árvore de pendentes.
+                //Removemos a ocorrência da árvore de pendentes.
                 Ocorrencia* ocorr_atendida = removerOcorrenciaMaiorPrioridade(arvoreAVL);
 
                 // E a movemos para a lista de "Em Atendimento".
@@ -140,8 +141,8 @@ int main() {
             } else {
                 printf("=> FALHA! Recursos indisponiveis. Ocorrencia ID %d permanece pendente.\n", ocorr_para_atender->id);
 
-                // IMPORTANTE: Se a alocação falhou no meio do caminho (ex: alocou polícia mas não bombeiro),
-                // temos que devolver os recursos que foram temporariamente pegos.
+                //Se a alocação falhou no meio do caminho (ex: alocou polícia mas não bombeiro),
+                //temos que devolver os recursos que foram temporariamente pegos.
                 if (id_pol != 0) liberar_policia(policias, id_pol);
                 if (id_bom != 0) liberar_bombeiro(bombeiros, id_bom);
                 if (id_hos != 0) liberar_hospital(hospitais, id_hos);
@@ -149,7 +150,7 @@ int main() {
         }
 
         printf("\n\n=========== ATUALIZAÇÃO DE OCORRÊNCIAS EM ANDAMENTO ============\n\n");
-        // --- PASSO 3: Atualizar ocorrências em atendimento ---
+        // --- Atualizando ocorrências em atendimento ---
         NoLista **pp_atual = &(em_atendimento -> cabeca);
         while (*pp_atual != NULL) {
 
@@ -173,7 +174,7 @@ int main() {
                 *pp_atual = no_a_remover->prox;
                 em_atendimento->tamanho--;
 
-                no_a_remover->prox = NULL; // Isolar o nó
+                no_a_remover->prox = NULL;
                 adiciona_inicio_lista_relatorio(relatorio_final, ocorr_atual);
                 free(no_a_remover);
 
@@ -219,6 +220,7 @@ int main() {
         printf("4. Buscar bairro por ID\n");
         printf("5. Relatório das Ocorrências Atendidas\n");
         printf("6. Procura Ocorrência por ID na ABB\n");
+        printf("7. Exibir Lista Cruzada de Bairros e Serviços\n");
         printf("0. Sair\n");
         printf("Opcao: ");
         scanf("%d", &opcao);
@@ -273,6 +275,10 @@ int main() {
                 }else{
                     exibir_ocorrencia_especifica(procurado -> problema);
                 }
+                break;
+
+            case 7:
+                exibir_lista_cruzada_bairros_servicos(bairros, policias, bombeiros, hospitais);
                 break;
 
             case 0:
