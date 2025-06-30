@@ -41,6 +41,7 @@
 		<Unit filename="include/fila_de_ocorrencias.h" />
 		<Unit filename="include/hospital.h" />
 		<Unit filename="include/lista.h" />
+		<Unit filename="include/lista_cruzada.h" />
 		<Unit filename="include/morador.h" />
 		<Unit filename="include/ocorrencias.h" />
 		<Unit filename="include/pilha1.h" />
@@ -64,6 +65,9 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="src/lista.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/lista_cruzada.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="src/main.c">

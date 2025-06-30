@@ -9,7 +9,7 @@
 #include "../include/ocorrencias.h"
 #include "../include/lista.h"
 
-#define TAMANHO_TABELA 701 // Um número primo ideal para ~520 itens
+#define TAMANHO_TABELA 701
 
 // --- FUNÇÕES PRIVADAS ---
 
@@ -88,19 +88,19 @@ Morador* morador_busca_hash_encadeamento(Morador_Hash* ha, long long int cpf) {
 /*
 *---Função que preenche as informações dos moradores a partir de um arquivo .txt--
 *
-*   Lê o arquivo "moradores.txt" que deve estar no formato: CPF,Nome
+*   Lê o arquivo "moradores.txt" que tem os dados: CPF,Nome
 *
 *   Retorna: Ponteiro para a tabela preenchida ou NULL em caso de erro.
 */
 Morador_Hash* preenche_morador() {
-    // 1. Cria a estrutura da tabela hash
+    // Cria a estrutura da tabela hash
     Morador_Hash *ha = cria_hash_morador(TAMANHO_TABELA);
     if (ha == NULL) {
         perror("Erro ao criar a tabela hash");
         return NULL;
     }
 
-    // 2. Abre o arquivo de dados
+    // Abre o arquivo de dados
     FILE *arquivo = fopen("moradores.txt", "r");
     if (arquivo == NULL) {
         perror("ERRO: Nao foi possivel abrir o arquivo 'moradores.txt'. Verifique se ele existe no diretorio do executavel.");
@@ -111,7 +111,7 @@ Morador_Hash* preenche_morador() {
     char linha[256]; // Buffer para ler cada linha do arquivo
     int linha_num = 0;
 
-    // 3. Lê o arquivo linha por linha
+    // Lê o arquivo linha por linha
     while (fgets(linha, sizeof(linha), arquivo) != NULL) {
         linha_num++;
         Morador morador_temp;
@@ -140,16 +140,13 @@ Morador_Hash* preenche_morador() {
         }
     }
 
-    // 4. Fecha o arquivo e retorna a tabela preenchida
+    //Fecha o arquivo e retorna a tabela preenchida
     fclose(arquivo);
     printf("Carga de dados finalizada. Total de %d moradores carregados do arquivo.\n", ha->qtd);
     return ha;
 }
 
-/*
-* As funções abaixo permanecem como na versão anterior, pois sua lógica não depende
-* de como os dados foram carregados, apenas da estrutura da tabela.
-*/
+//Puxa um morador aleatório para a ocorrencia atual
 
 Morador* morador_aleatorio(Morador_Hash *ha) {
     if (ha == NULL || ha->qtd == 0) return NULL;
@@ -162,7 +159,7 @@ Morador* morador_aleatorio(Morador_Hash *ha) {
 
 void morador_atribui_relatorio_final(Morador_Hash *ha, ListaLigadaRelatorio *relatorio) {
     if (ha == NULL || relatorio == NULL || relatorio->cabeca == NULL) {
-        return; // Nada a fazer
+        return;
     }
 
     printf("\nAtribuindo historico de ocorrencias aos moradores...\n");
@@ -173,14 +170,14 @@ void morador_atribui_relatorio_final(Morador_Hash *ha, ListaLigadaRelatorio *rel
 
         // Verifica se a ocorrência tem um morador associado
         if (ocorrencia_original->morador != NULL) {
-            // 1. Pega o CPF do morador da ocorrência original.
+            // Pega o CPF do morador da ocorrência original.
             long long int cpf_alvo = ocorrencia_original -> morador -> cpf;
 
-            // 2. USA A FUNÇÃO DE BUSCA para encontrar o ponteiro para o morador
-            //    original e definitivo que está na tabela hash.
+            // Usa a função de busca para encontrar o ponteiro para o morador
+            // original e definitivo que está na tabela hash.
             Morador *morador_na_hash = morador_busca_hash_encadeamento(ha, cpf_alvo);
 
-            // 3. Garante que o morador foi encontrado na tabela.
+            //Garante que o morador foi encontrado na tabela.
             if (morador_na_hash != NULL) {
                 // Verifica se há espaço no histórico do morador.
                 if (morador_na_hash->num_ocorrencias < 50) {

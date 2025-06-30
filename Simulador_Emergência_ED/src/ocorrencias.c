@@ -6,7 +6,6 @@
 #include "../include/ocorrencias.h"
 #include "../include/morador.h"
 #include "../include/bairro.h"
-//#include "../include/arvore_binaria_busca.h"
 
 #define MAX 40
 
@@ -102,23 +101,23 @@ Ocorrencia* cria_ocorrencia(Bairros_Hash* ha, Morador_Hash *hash_morador, int ci
             strcpy(ocorrencia->tipo, "INCENDIO EM RESIDENCIA!");
             ocorrencia->prioridade = 5;
             ocorrencia->servico[1] = true; // Bombeiro
-            ocorrencia->servico[2] = true; // Hospital (Pode haver vítimas)
+            ocorrencia->servico[2] = true; // Hospital
             break;
 
         case FOGO_COMERCIAL:
             strcpy(ocorrencia->tipo, "INCENDIO EM ESTABELECIMENTO COMERCIAL!");
             ocorrencia->prioridade = 5;
             ocorrencia->servico[1] = true; // Bombeiro
-            ocorrencia->servico[2] = true; // Hospital (Pode haver vítimas)
-            ocorrencia->servico[0] = true; // Polícia (Controle de área/evacuação)
+            ocorrencia->servico[2] = true; // Hospital
+            ocorrencia->servico[0] = true; // Polícia
             break;
 
         case ACI_VEICULAR:
             strcpy(ocorrencia->tipo, "ACIDENTE DE VEICULO (POTENCIAL VITIMAS)!");
             ocorrencia->prioridade = 4;
             ocorrencia->servico[0] = true; // Polícia
-            ocorrencia->servico[1] = true; // Bombeiro (Resgate)
-            ocorrencia->servico[2] = true; // Hospital (Atendimento a feridos)
+            ocorrencia->servico[1] = true; // Bombeiro
+            ocorrencia->servico[2] = true; // Hospital
             break;
 
         case ACI_DOM_LEVE:
@@ -131,7 +130,7 @@ Ocorrencia* cria_ocorrencia(Bairros_Hash* ha, Morador_Hash *hash_morador, int ci
             strcpy(ocorrencia->tipo, "ACIDENTE DOMESTICO (TRAUMA GRAVE)!");
             ocorrencia->prioridade = 5;
             ocorrencia->servico[2] = true; // Hospital
-            ocorrencia->servico[1] = true; // Bombeiro (Se precisar de resgate)
+            ocorrencia->servico[1] = true; // Bombeiro
             break;
 
         case INFARTO:
@@ -150,15 +149,15 @@ Ocorrencia* cria_ocorrencia(Bairros_Hash* ha, Morador_Hash *hash_morador, int ci
             strcpy(ocorrencia->tipo, "VIOLENCIA DOMESTICA!");
             ocorrencia->prioridade = 5;
             ocorrencia->servico[0] = true; // Polícia
-            ocorrencia->servico[2] = true; // Hospital (Pode haver feridos)
+            ocorrencia->servico[2] = true; // Hospital
             break;
 
         case DESABAMENTO:
             strcpy(ocorrencia->tipo, "DESABAMENTO DE ESTRUTURA!");
             ocorrencia->prioridade = 5;
-            ocorrencia->servico[0] = true; // Polícia (Isolamento)
-            ocorrencia->servico[1] = true; // Bombeiro (Busca e Resgate)
-            ocorrencia->servico[2] = true; // Hospital (Atendimento a feridos)
+            ocorrencia->servico[0] = true; // Polícia
+            ocorrencia->servico[1] = true; // Bombeiro
+            ocorrencia->servico[2] = true; // Hospital
             break;
 
         case PESSOA_DESAPARECIDA:
@@ -170,35 +169,35 @@ Ocorrencia* cria_ocorrencia(Bairros_Hash* ha, Morador_Hash *hash_morador, int ci
         case MANIFESTACAO:
             strcpy(ocorrencia->tipo, "MANIFESTACAO/DISTURBIO EM VIA PUBLICA!");
             ocorrencia->prioridade = 3;
-            ocorrencia->servico[0] = true; // Polícia (Controle)
+            ocorrencia->servico[0] = true; // Polícia
             break;
 
         case ENVOLVIMENTO_ARMA:
             strcpy(ocorrencia->tipo, "ENVOLVIMENTO COM ARMA DE FOGO/BRANCA!");
             ocorrencia->prioridade = 5;
-            ocorrencia->servico[0] = true; // Polícia (Altíssimo risco)
-            ocorrencia->servico[2] = true; // Hospital (Pode haver feridos)
+            ocorrencia->servico[0] = true; // Polícia
+            ocorrencia->servico[2] = true; // Hospital
             break;
 
         case SUICIDIO:
             strcpy(ocorrencia->tipo, "TENTATIVA DE SUICIDIO!");
             ocorrencia->prioridade = 5;
-            ocorrencia->servico[0] = true; // Polícia (Controle da situação)
-            ocorrencia->servico[2] = true; // Hospital (Atendimento psiquiátrico/médico)
+            ocorrencia->servico[0] = true; // Polícia
+            ocorrencia->servico[2] = true; // Hospital
             break;
 
         case AFOGAMENTO:
             strcpy(ocorrencia->tipo, "OCORRENCIA DE AFOGAMENTO!");
             ocorrencia->prioridade = 5;
-            ocorrencia->servico[1] = true; // Bombeiro (Resgate aquático)
-            ocorrencia->servico[2] = true; // Hospital (Atendimento médico)
+            ocorrencia->servico[1] = true; // Bombeiro
+            ocorrencia->servico[2] = true; // Hospital
             break;
 
         case INUNDACAO:
             strcpy(ocorrencia->tipo, "AREA DE INUNDACAO/ALAGAMENTO!");
             ocorrencia->prioridade = 4;
-            ocorrencia->servico[1] = true; // Bombeiro (Resgate, avaliação de risco)
-            ocorrencia->servico[0] = true; // Polícia (Isolamento da área)
+            ocorrencia->servico[1] = true; // Bombeiro
+            ocorrencia->servico[0] = true; // Polícia
             break;
 
         case FALSA_ALARME:
@@ -275,7 +274,6 @@ void exibir_ocorrencia_especifica(Ocorrencia *ocorrencia){
     } else {
         printf("Morador: Nao Atribuido\n");
     }
-
 
     printf("--- Servicos Necessitados ---\n");
         if (ocorrencia -> servico[0]){

@@ -102,7 +102,7 @@ int main() {
          //Tentar despachar a ocorrência de maior prioridade ---
         if (arvoreAVL -> raiz != NULL) {
 
-            //Primeiro, apenas "espiamos" a ocorrência mais urgente sem removê-la.
+            //Conferimos a ocorrência mais urgente sem removê-la.
             Ocorrencia* ocorr_para_atender = obter_ocorrencia_maior_prioridade(arvoreAVL);
 
             printf("Tentando despachar Ocorrencia ID %d (Prioridade %d)...\n", ocorr_para_atender->id, ocorr_para_atender->prioridade);
@@ -110,7 +110,7 @@ int main() {
             bool recursos_alocados = true;
             int id_pol = 0, id_bom = 0, id_hos = 0;
 
-            // Verificamos se temos os recursos necessários para ELA.
+            // Verificamos se temos os recursos necessários para atende-la.
             if (ocorr_para_atender->servico[0]) {
                 id_pol = despacha_policia(policias, ocorr_para_atender->bairro->id);
                 if (id_pol == 0) recursos_alocados = false;
@@ -124,7 +124,7 @@ int main() {
                 if (id_hos == 0) recursos_alocados = false;
             }
 
-            //Se TODOS os recursos foram alocados com sucesso...
+            //Se todos os recursos foram alocados com sucesso...
             if (recursos_alocados) {
                 printf("=> SUCESSO! Recursos alocados para Ocorrencia ID %d.\n", ocorr_para_atender->id);
 
@@ -294,7 +294,7 @@ int main() {
     free_lista_relatorio(relatorio_final); // Esta função já deve liberar as ocorrências
     free_lista_relatorio(em_atendimento); // Deveria estar vazia, mas por segurança
     destruirArvoreAVL(arvoreAVL); // Libera a árvore e nós restantes
-
+    liberarArvore(ABB.raiz);
     bairro_libera_hash(bairros);
     policia_libera_hash(policias);
     bombeiro_libera_hash(bombeiros);

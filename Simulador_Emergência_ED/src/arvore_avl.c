@@ -1,11 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdbool.h> // Para 'bool'
-#include <string.h>  // Para 'strcpy'
-#include <time.h>    // Para 'rand' e 'time'
+#include <stdbool.h>
+#include <string.h>
+#include <time.h>
 
-#include "../include/ocorrencias.h" // Contém Ocorrencia
-#include "../include/fila_de_ocorrencias.h" // Contém No, Descritor, e as declarações das funções da fila
+#include "../include/ocorrencias.h"
+#include "../include/fila_de_ocorrencias.h"
 #include "../include/arvore_avl.h"
 
 // =========================================================================
@@ -40,7 +40,7 @@ NoAVL* novoNoAVL(Ocorrencia* ocorrencia){
 
     novo->prioridade = ocorrencia->prioridade; // A chave do nó é a prioridade
 
-    novo->fila_ocorrencias = cria_fila(); // Supondo que cria_fila() retorna um Descritor*
+    novo->fila_ocorrencias = cria_fila();
     if (novo->fila_ocorrencias == NULL) {
         printf("\nERRO AO INICIALIZAR FILA NO NO AVL!\n");
         free(novo);
@@ -50,7 +50,7 @@ NoAVL* novoNoAVL(Ocorrencia* ocorrencia){
     No* novo_no_fila = (No*) malloc(sizeof(No));
     if (novo_no_fila == NULL) {
         printf("\nERRO AO ALOCAR NO PARA FILA INTERNA!\n");
-        free_fila(novo->fila_ocorrencias); // Se cria_fila() já tiver sido chamada e tiver êxito
+        free_fila(novo->fila_ocorrencias);
         free(novo);
         return NULL;
     }
